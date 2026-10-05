@@ -3,7 +3,8 @@
 Este directorio queda versionado mediante esta documentación. Una tarea puede
 representarse en un archivo UTF-8 `.jsonl`: un objeto JSON por línea, sin array
 envolvente, comentarios ni saltos de línea dentro de cada objeto.
-No hay contrato definitivo de US-D7-T4 en esta preparación.
+El contrato [us-d7-t4-grafana.jsonl](us-d7-t4-grafana.jsonl) prepara e implementa
+Grafana en siete registros ordenados; requiere evidencia runtime para DONE.
 
 La referencia de formato inspeccionada es
 `PubTube-Mod4/tasks/us-d7-t2-ci-runtime-smoke.jsonl`, commit

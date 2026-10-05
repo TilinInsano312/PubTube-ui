@@ -23,4 +23,20 @@ python -m pytest -q agents/tests
 
 Flujo Git: `main -> develop -> feature/*`. Preparar contrato, implementar,
 validar, revisar diff y abrir PR hacia `develop`. El merge se autoriza por separado.
-Esta preparación no implementa US-D7-T4 ni añade servicios de producto.
+La fábrica se preparó sin inicializar el frontend funcional.
+
+## Observabilidad técnica (US-D7-T4)
+
+Grafana y el dashboard **PubTube Gateway** se provisionan desde archivos
+versionados. Grafana utiliza el Prometheus existente de PubTube-Mod4/develop
+por la red Docker `pubtube-network`; levantar el backend primero.
+Ver [arranque, credenciales, paneles y reconstrucción](docs/grafana.md) y el
+[contrato de siete pasos](tasks/us-d7-t4-grafana.jsonl).
+
+```sh
+# Con GRAFANA_ADMIN_PASSWORD definida en el entorno:
+docker compose -f docker-compose.observability.yml up -d --wait
+python scripts/observability/verify_grafana.py
+```
+
+Grafana es diagnóstico técnico. Vue será la UI funcional del producto.
