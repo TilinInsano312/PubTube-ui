@@ -3,7 +3,24 @@
 PubTube-ui utiliza una fábrica agéntica para el frontend del Módulo 4.
 El usuario y ChatGPT orquestan; Codex ejecuta, valida y reporta.
 Leer la tarea actual, el estado real del repositorio, README, docs y contratos
-antes de implementar. No asumir que archivos o servicios futuros ya existen.
+antes de implementar. `docs/architecture.md` es obligatorio para cualquier
+cambio del frontend. No asumir que archivos o servicios futuros ya existen.
+
+## Documentación obligatoria
+
+Antes de planificar o editar:
+
+1. Leer `README.md` y `docs/architecture.md`.
+2. Leer `docs/agentic-development.md` para el ciclo, harness y evidencia.
+3. Leer el documento específico del alcance, por ejemplo `docs/grafana.md`, y
+   el contrato de la tarea en `tasks/*.jsonl` cuando corresponda.
+4. Contrastar esas decisiones con `package.json`, lockfiles y el código real.
+
+Los documentos guían la implementación, pero no convierten una funcionalidad
+planificada en una funcionalidad existente. Si hay una discrepancia entre docs,
+contratos y código, registrarla y resolverla antes de inventar una solución.
+Una modificación posterior de la arquitectura exige revisar las tareas y el
+diff afectado.
 
 ## Ciclo y cierre
 
@@ -28,16 +45,17 @@ No hacer force push ni borrar trabajo ajeno.
 
 ## Frontend
 
-- Vue 3 + Vite es el stack acordado para la UI funcional futura.
+- Vue 3 + Vite + TypeScript es el stack actual de la UI funcional.
 - Mantener componentes pequeños; separar vistas, componentes, composables y servicios.
 - Respetar contratos API reales; no hardcodear endpoints ni inventar contratos.
 - Proteger secretos: las variables `VITE_*` son públicas en el navegador;
   nunca guardar tokens privados, passwords o credenciales en ellas.
-- Cuando exista `package.json`, leer sus scripts y los lockfiles para identificar
-  el gestor. Usar los scripts reales para lint, test, type-check y build.
-  No inventar comandos ni asumir npm/pnpm/yarn.
-- Si aún no existe frontend Vue, validar la fábrica Python; su ausencia no es
-  un fallo npm. Esta tarea no autoriza inicializar Vue, Vite o `package.json`.
+- Cuando exista `package.json`, leer sus scripts y lockfiles para identificar el
+  gestor. En este repositorio el gestor vigente es npm (`package-lock.json`).
+  Usar los scripts reales para lint, test, type-check y build; no inventar
+  comandos ni asumir dependencias que no estén instaladas.
+- Si una capacidad frontend todavía no existe, distinguirla de lo planificado
+  en `docs/architecture.md` y agregarla solo si la tarea la autoriza.
 
 ## Observabilidad y Docker
 
@@ -53,8 +71,8 @@ No hacer force push ni borrar trabajo ajeno.
 
 ## Herramientas y documentación
 
-Ver [guía operativa](docs/agentic-development.md), [ciclo](agents/software-engineering-loop.md)
-y [plantilla de tarea](agents/templates/task-template.md).
+Ver [arquitectura frontend](docs/architecture.md), [guía operativa](docs/agentic-development.md),
+[ciclo](agents/software-engineering-loop.md) y [plantilla de tarea](agents/templates/task-template.md).
 Desde la raíz: `python -m agents.harness.run_agent_loop "Objetivo" --ac "Resultado verificable" --scope "agents/"`.
 La fábrica prepara estado y briefs; el ejecutor realiza los cambios y registra
 evidencia. No ejecuta automáticamente comandos, agentes externos ni merges.

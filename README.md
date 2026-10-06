@@ -36,7 +36,8 @@ python -m pytest -q agents/tests
 
 Flujo Git: `main -> develop -> feature/*`. Preparar contrato, implementar,
 validar, revisar diff y abrir PR hacia `develop`. El merge se autoriza por separado.
-La fábrica se preparó sin inicializar el frontend funcional.
+El frontend funcional base está inicializado; las features de producto se
+agregarán según contratos y tareas autorizadas.
 
 ## Observabilidad técnica (US-D7-T4)
 
@@ -52,4 +53,4 @@ docker compose -f docker-compose.observability.yml up -d --wait
 python scripts/observability/verify_grafana.py
 ```
 
-Grafana es diagnóstico técnico. Vue será la UI funcional del producto.
+Grafana es diagnóstico técnico. Vue es la UI funcional del producto.

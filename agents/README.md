@@ -1,9 +1,10 @@
 # Fábrica agéntica PubTube-ui
 
 Adaptación de la fábrica de PubTube-Mod4 para preparar tareas frontend y
-observabilidad sin inicializar Vue ni desplegar Grafana.
+observabilidad sin desplegar Grafana.
 
-- [Arquitectura](architecture.md): responsabilidades y extensión.
+- [Arquitectura de la fábrica](architecture.md): responsabilidades y extensión.
+- [Arquitectura frontend](../docs/architecture.md): límites y decisiones de la UI.
 - [Ciclo operativo](software-engineering-loop.md): análisis hasta decisión.
 - [Core](core/loop.py): AC, evidencia, cambios, tests y reportes.
 - [Perfiles](profiles/): ingeniería, review, QA y documentación.
@@ -15,4 +16,5 @@ observabilidad sin inicializar Vue ni desplegar Grafana.
 
 Desde la raíz, ejecutar `python -m agents.harness.run_agent_loop "Objetivo" --ac "Resultado" --scope "agents/"`.
 El comando genera un brief; no implementa la tarea ni prueba un AC por sí mismo.
-Leer [AGENTS.md](../AGENTS.md) y [guía](../docs/agentic-development.md) antes de editar.
+Leer [AGENTS.md](../AGENTS.md), [arquitectura frontend](../docs/architecture.md) y
+[guía](../docs/agentic-development.md) antes de editar.

@@ -1,8 +1,9 @@
 # Desarrollo agéntico de PubTube-ui
 
 La fábrica prepara desarrollo asistido por agentes del frontend del Módulo 4.
-Vue 3 + Vite es el stack acordado para la UI funcional futura. Esta preparación
-no crea package.json, frontend, dashboards, Prometheus ni servicios Docker.
+Vue 3 + Vite + TypeScript es el stack actual de la UI funcional. El frontend
+base ya está inicializado; la fábrica no crea automáticamente nuevas features,
+dashboards, Prometheus ni servicios Docker.
 Grafana es la UI técnica de observabilidad; no debe reinventarse en Vue.
 
 ## Estructura y flujo
@@ -120,8 +121,9 @@ Si no puede activarse, usar directamente `.venv/bin/python` en POSIX o
 aislada, no dependencia del producto. Si no está disponible, informar
 NOT VERIFIED; no ocultar el fallo.
 
-Cuando exista package.json, inspeccionar scripts y gestor antes de lint, test,
-type-check o build. Sin frontend, su ausencia no constituye fallo npm.
+Cuando exista package.json, inspeccionar scripts, lockfile y gestor antes de
+lint, test, type-check o build. En este repositorio se usa npm y la validación
+frontend disponible es `npm run build`; no inventar scripts que no existan.
 Proteger secretos: VITE_* es público, endpoints configurados mediante mecanismos
 existentes y contratos API conservados. Grafana usa datasources/dashboards/
 provisioning versionados cuando estén autorizados; Prometheus sigue en backend,

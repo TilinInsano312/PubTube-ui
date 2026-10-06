@@ -1,7 +1,7 @@
 # Grafana: dashboard técnico del Gateway (US-D7-T4)
 
 Grafana sirve para diagnóstico técnico de tráfico, errores y latencia. Vue 3
-será la UI funcional del producto; no es esta interfaz ni un iframe de Grafana.
+es la UI funcional del producto; no es esta interfaz ni un iframe de Grafana.
 Este repositorio agrega únicamente Grafana y consume Prometheus existente.
 
 ```text
