@@ -33,15 +33,18 @@ separa explícitamente lo que existe de lo que queda planificado:
 | Lenguaje | TypeScript | Configurado con `vue-tsc` |
 | Estilo de componentes | Composition API y `<script setup>` | Usado por el scaffold |
 | Sistema visual base | `src/styles/tokens.css` y `src/styles/global.css` | Implementado |
+| Iconografía | Lucide para Vue mediante `@lucide/vue` | Instalada en `package.json` |
 | Gestor | npm | Confirmado por `package-lock.json` |
 | Validación actual | `vue-tsc -b` + `vite build` | Script `npm run build` |
 
 ### Dependencias que todavía no forman parte del proyecto
 
-Vue Router, Pinia, Tailwind CSS, Lucide Vue, Axios, Vitest, Playwright,
-ESLint y Prettier no están instalados actualmente. Solo deben incorporarse
-cuando una tarea concreta los necesite, con justificación y actualización del
-lockfile. La arquitectura no autoriza asumir que esas herramientas ya existen.
+Vue Router, Pinia, Tailwind CSS, Axios, Vitest, Playwright, ESLint y Prettier
+no están instalados actualmente. La iconografía de la UI usa Lucide mediante
+`@lucide/vue`; la versión efectiva se define en `package.json`. Las demás
+dependencias solo deben incorporarse cuando una tarea concreta las necesite,
+con justificación y actualización del lockfile. La arquitectura no autoriza
+asumir que esas herramientas ya existen.
 
 ## Límites del repositorio
 

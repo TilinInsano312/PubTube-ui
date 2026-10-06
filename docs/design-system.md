@@ -588,17 +588,17 @@ Se DEBE respetar `prefers-reduced-motion` y ninguna tarea esencial puede depende
 
 ## 19. Iconografía
 
-La familia iconográfica oficial es **Lucide** mediante su integración para Vue.
+La familia iconográfica oficial es **Lucide** y la integración vigente de Vue
+es `@lucide/vue`. La versión efectiva pertenece a `package.json`.
 
 ### Reglas
 
+- Los componentes Vue que necesiten iconos DEBEN importarlos desde `@lucide/vue`.
 - No mezclar familias de iconos sin una necesidad explícita.
 - Los iconos DEBEN seguir la escala visual definida en tokens.
 - Un icono ambiguo NO DEBE sustituir texto necesario.
 - Los iconos decorativos DEBEN ocultarse de tecnologías de asistencia cuando corresponda.
 - Una acción representada solo mediante icono DEBE tener nombre accesible.
-
-La dependencia concreta y su versión pertenecen a `package.json`.
 
 ---
 
