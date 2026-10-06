@@ -23,6 +23,9 @@ no llama modelos, no ejecuta shell automáticamente y no hace merges.
 ## Preparar y ejecutar una tarea
 
 1. Verificar rama, base y cambios previos. Leer AGENTS, README y docs relevantes.
+   Para tareas que afecten interfaz, estilos, tokens, layout visual o
+   presentación, `docs/design-system.md` es documentación aplicable y debe
+   leerse antes de implementar.
 2. Usar la [plantilla](../agents/templates/task-template.md) para objetivo,
    scope, AC verificables, acciones, validaciones, riesgos y restricciones.
 3. Generar el brief desde la raíz con Python 3.10 o posterior:
