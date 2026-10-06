@@ -22,8 +22,9 @@ npm run build
 
 La fábrica en [agents/](agents/README.md) adapta la de PubTube-Mod4 a este repositorio.
 Incluye estado del ciclo, perfiles, skills, orquestador, harness, plantillas y tests.
-Consultar [AGENTS.md](AGENTS.md), la [guía de desarrollo](docs/agentic-development.md)
-y el [formato de tareas JSONL](tasks/README.md).
+Consultar [AGENTS.md](AGENTS.md), la [guía de desarrollo](docs/agentic-development.md),
+el [Design System](docs/design-system.md) del frontend y el
+[formato de tareas JSONL](tasks/README.md).
 
 Requisitos: Python 3.10 o posterior; pytest solo para ejecutar tests.
 El código de la fábrica usa la biblioteca estándar, sin dependencias frontend.

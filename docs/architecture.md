@@ -6,17 +6,18 @@ Este documento define los límites y las decisiones de arquitectura para la UI
 funcional del Módulo 4. Debe leerse junto con `AGENTS.md`, el README y la tarea
 que se esté ejecutando.
 
-El frontend Vue ya está inicializado, pero todavía es un scaffold funcional de
-Vite. El repositorio aún no contiene vistas de producto, integración HTTP,
-routing ni estado global. Por eso este documento separa explícitamente lo que
-existe de lo que queda planificado:
+El frontend Vue ya está inicializado como un scaffold funcional de Vite y cuenta
+con una base de sistema visual. El repositorio aún no contiene vistas de
+producto, integración HTTP, routing ni estado global. Por eso este documento
+separa explícitamente lo que existe de lo que queda planificado:
 
-- **Implementado:** Vue 3, Vite, TypeScript, Composition API, `<script setup>`
-  y scripts npm `dev`, `build` y `preview`.
+- **Implementado:** Vue 3, Vite, TypeScript, Composition API, `<script setup>`,
+  tokens de diseño base, estilos globales base y scripts npm `dev`, `build` y
+  `preview`.
 - **Implementado fuera de Vue:** provisioning de Grafana y su compose de
   observabilidad; Grafana es la UI técnica y consume Prometheus del backend.
 - **Planificado:** features de producto, cliente API, Vue Router, Pinia,
-  estilos/componentes adicionales y pruebas frontend.
+  estilos/componentes de UI adicionales y pruebas frontend.
 - **No disponible en este repositorio:** el backend, sus endpoints efectivos,
   RabbitMQ, PostgreSQL y los contratos funcionales completos. No deben
   inventarse para avanzar una pantalla.
@@ -31,6 +32,7 @@ existe de lo que queda planificado:
 | Build/dev server | Vite | Instalado y validado con `npm run build` |
 | Lenguaje | TypeScript | Configurado con `vue-tsc` |
 | Estilo de componentes | Composition API y `<script setup>` | Usado por el scaffold |
+| Sistema visual base | `src/styles/tokens.css` y `src/styles/global.css` | Implementado |
 | Gestor | npm | Confirmado por `package-lock.json` |
 | Validación actual | `vue-tsc -b` + `vite build` | Script `npm run build` |
 
@@ -80,9 +82,17 @@ src/
 │   ├── composables/
 │   ├── types/
 │   └── utils/
+├── styles/
+│   ├── tokens.css               # Fuente de verdad de valores visuales globales
+│   └── global.css               # Base global mínima de la aplicación
 ├── App.vue
 └── main.ts
 ```
+
+`tokens.css` centraliza los valores visuales globales y `global.css` contiene
+únicamente la base global de la aplicación. Los estilos específicos de vistas y
+componentes permanecen locales al componente, preferentemente mediante
+`<style scoped>`.
 
 ### `api/`
 
@@ -177,6 +187,8 @@ python -m pytest -q agents/tests
 
 - `AGENTS.md`: reglas operativas obligatorias para agentes.
 - `docs/architecture.md`: límites y decisiones de arquitectura frontend.
+- `docs/design-system.md`: reglas visuales, semántica de tokens, accesibilidad
+  y criterios de evolución de la interfaz.
 - `docs/agentic-development.md`: ciclo, harness, orquestador y evidencia.
 - `docs/grafana.md`: operación de la observabilidad técnica.
 - `tasks/*.jsonl`: alcance, criterios y validaciones de cada tarea.
