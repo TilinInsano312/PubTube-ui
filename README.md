@@ -1,9 +1,22 @@
 # PubTube-Mod4-ui
 Frontend PubTube Modulo 4 Para la asignatura de direccion de proyecto
 
-PubTube-ui será el repositorio de la UI del Módulo 4. El stack acordado para
-el frontend funcional es **Vue 3 + Vite**; todavía no está inicializado.
+PubTube-ui es el repositorio de la UI del Módulo 4. El frontend funcional está
+inicializado con **Vue 3 + Vite + TypeScript**.
 Grafana será la UI técnica de observabilidad, con Prometheus en infraestructura/backend.
+
+## Desarrollo del frontend
+
+```sh
+npm install
+npm run dev
+```
+
+Para validar el build de producción:
+
+```sh
+npm run build
+```
 
 ## Desarrollo asistido por agentes
 
