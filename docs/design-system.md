@@ -102,9 +102,10 @@ La dirección visual es:
 - profesional y sobria;
 - propia de un dashboard/SaaS de gestión;
 - predominantemente clara (`light`);
-- basada en una familia azul para marca y acción;
+- basada en una familia morada para marca, interacción y acción;
 - apoyada por neutros para superficies, texto y bordes;
-- con colores semánticos separados para éxito, advertencia, peligro e información;
+- con familias semánticas independientes para información, éxito, advertencia y peligro;
+- con azul reservado para información, no para branding;
 - con ornamentación contenida y jerarquía visual explícita.
 
 La interfaz NO DEBE imitar visualmente YouTube ni depender de su lenguaje gráfico.
@@ -179,11 +180,16 @@ El sistema utiliza dos niveles principales.
 Definen escalas visuales sin significado funcional, por ejemplo:
 
 ```text
-color.blue.*
-color.neutral.*
-color.green.*
-color.amber.*
-color.red.*
+color.primary.*
+color.ink
+color.muted
+color.border.*
+color.canvas
+color.surface.*
+color.info.*
+color.success.*
+color.warning.*
+color.danger.*
 space.*
 radius.*
 shadow.*
@@ -200,20 +206,31 @@ Definen intención de uso, por ejemplo:
 ```text
 color.text.primary
 color.text.secondary
-color.text.muted
-color.surface.page
-color.surface.default
-color.surface.subtle
+color.text.inverse
+color.background.canvas
+color.background.surface
+color.background.sunken
 color.border.default
 color.border.strong
 color.action.primary
 color.action.primary-hover
 color.action.primary-active
-color.status.success
-color.status.warning
-color.status.danger
-color.status.info
+color.action.primary-soft
+color.action.primary-soft-strong
+color.status.success.solid
+color.status.success.soft
+color.status.success.text
+color.status.warning.solid
+color.status.warning.soft
+color.status.warning.text
+color.status.danger.solid
+color.status.danger.soft
+color.status.danger.text
+color.status.info.solid
+color.status.info.soft
+color.status.info.text
 color.focus
+color.selection
 ```
 
 La nomenclatura exacta puede evolucionar, pero DEBE conservar una estructura basada en **categoría + intención + estado**, nunca en el valor actual.
@@ -229,7 +246,29 @@ Antes de crear un token semántico nuevo se DEBE:
 
 Dos nombres diferentes NO DEBEN generar colores diferentes si representan la misma intención.
 
-### 6.3 Valores arbitrarios
+### 6.3 Catálogo de foundations
+
+`src/styles/tokens.css` es el catálogo exacto de valores. La API recomendada
+para consumers se organiza en estas foundations:
+
+- **Color:** `primary-50..900`, `ink`, `muted`, `border`, `border-strong`,
+  `canvas`, `surface`, `surface-sunken`, y las familias semánticas
+  `info`, `success`, `warning` y `danger`.
+- **Tipografía:** familia sans y mono, pesos, y los roles `display`,
+  `heading-1`, `heading-2`, `heading-3`, `body`, `small`, `caption` y `mono`.
+- **Spacing:** la escala `space-1` a `space-16` con los pasos aprobados.
+- **Forma y controles:** `radius-*`, `control-height-*`, `icon-size-*`,
+  `border-width-default` y el focus ring.
+- **Elevación y movimiento:** `shadow-*`, `motion-duration-*` y
+  `motion-easing-standard`.
+- **Layout:** `layout-navigation-rail-width`, `layout-topbar-height` y
+  `layout-dashboard-width`.
+
+Los valores concretos no se duplican aquí: cualquier cambio aprobado debe
+actualizar primero el CSS y después esta descripción semántica si cambia la
+API. No existe una paleta primaria azul paralela.
+
+### 6.4 Valores arbitrarios
 
 No se deben introducir valores locales arbitrarios para:
 
@@ -270,6 +309,16 @@ Debe existir cobertura semántica para:
 - Los estados del dominio DEBEN mapearse a la semántica visual existente antes de crear nuevas familias de color.
 - La aparición de un nuevo estado del backend NO implica automáticamente un nuevo token de color.
 - Los valores efectivos DEBEN cumplir los requisitos de contraste definidos en accesibilidad.
+
+| Semántica | Familia visual | Uso |
+| --- | --- | --- |
+| Purple | Morado | Marca, interacción y acción |
+| Info | Azul | Información semántica únicamente |
+| Success | Verde | Resultado positivo |
+| Warning | Ámbar | Advertencia o atención |
+| Danger | Rojo | Error, riesgo o acción peligrosa |
+
+**Primary NO representa estados. Info NO representa branding.**
 
 ---
 
@@ -360,9 +409,12 @@ No se implementan variantes móviles ni patrones táctiles específicos mientras
 
 ### 11.2 Navegación principal
 
-La navegación principal utiliza una **sidebar fija y no colapsable**.
+La navegación principal utiliza un **navigation rail fijo y no colapsable**.
 
-- Su ancho efectivo pertenece al sistema de tokens/layout.
+- Su ancho efectivo pertenece a `--layout-navigation-rail-width`.
+- La barra superior utiliza `--layout-topbar-height` y el contenido de
+  dashboard puede limitarse mediante `--layout-dashboard-width`.
+- No se utiliza el antiguo token de sidebar para el layout aprobado.
 - El contenido principal DEBE considerar permanentemente su presencia.
 - El estado activo DEBE ser reconocible sin depender únicamente del color.
 - La navegación NO DEBE cambiar de patrón entre vistas sin una razón funcional.
@@ -771,7 +823,7 @@ Aplicar solo los puntos relevantes al cambio.
 - [ ] La selección múltiple solo existe si hay una operación real que la necesite.
 - [ ] La vista funciona desde 1280×720 dentro del alcance desktop.
 - [ ] No existe scroll horizontal accidental a nivel de página.
-- [ ] La sidebar fija mantiene una navegación consistente.
+- [ ] El navigation rail fijo mantiene una navegación consistente.
 - [ ] El foco es visible y la interacción relevante funciona mediante teclado.
 - [ ] La información no depende exclusivamente del color.
 - [ ] Los colores efectivos cumplen WCAG 2.2 AA.
@@ -794,7 +846,7 @@ Evitar:
 - utilizar el color primario para todos los estados;
 - diseñar para mobile cuando no forma parte del alcance;
 - implementar dark mode preventivamente;
-- hacer colapsable la sidebar sin un requisito explícito;
+- hacer colapsable el navigation rail sin un requisito explícito;
 - introducir selección múltiple sin una operación de lote real;
 - utilizar modales o feedback global para confirmaciones triviales;
 - mostrar errores lejos del contexto que los produjo cuando pueden mostrarse localmente;
