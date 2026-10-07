@@ -6,17 +6,18 @@ Este documento define los límites y las decisiones de arquitectura para la UI
 funcional del Módulo 4. Debe leerse junto con `AGENTS.md`, el README y la tarea
 que se esté ejecutando.
 
-El frontend Vue ya está inicializado, pero todavía es un scaffold funcional de
-Vite. El repositorio aún no contiene vistas de producto, integración HTTP,
-routing ni estado global. Por eso este documento separa explícitamente lo que
-existe de lo que queda planificado:
+El frontend Vue ya está inicializado y contiene la primera feature de
+producto (`src/features/auth`: vistas de login y registro con Vue Router).
+Todavía no existen integración HTTP ni estado global. Por eso este documento
+separa explícitamente lo que existe de lo que queda planificado:
 
-- **Implementado:** Vue 3, Vite, TypeScript, Composition API, `<script setup>`
-  y scripts npm `dev`, `build` y `preview`.
+- **Implementado:** Vue 3, Vite, TypeScript, Composition API, `<script setup>`,
+  scripts npm `dev`, `build` y `preview`, Vue Router con las rutas `/login` y
+  `/register`, y la feature de autenticación en `src/features/auth`.
 - **Implementado fuera de Vue:** provisioning de Grafana y su compose de
   observabilidad; Grafana es la UI técnica y consume Prometheus del backend.
-- **Planificado:** features de producto, cliente API, Vue Router, Pinia,
-  estilos/componentes adicionales y pruebas frontend.
+- **Planificado:** cliente API, Pinia, estilos/componentes adicionales y
+  pruebas frontend.
 - **No disponible en este repositorio:** el backend, sus endpoints efectivos,
   RabbitMQ, PostgreSQL y los contratos funcionales completos. No deben
   inventarse para avanzar una pantalla.
@@ -30,13 +31,14 @@ existe de lo que queda planificado:
 | UI | Vue 3 | Instalada en `package.json` |
 | Build/dev server | Vite | Instalado y validado con `npm run build` |
 | Lenguaje | TypeScript | Configurado con `vue-tsc` |
+| Routing | Vue Router | Instalado en `package.json`; rutas `/login` y `/register` |
 | Estilo de componentes | Composition API y `<script setup>` | Usado por el scaffold |
 | Gestor | npm | Confirmado por `package-lock.json` |
 | Validación actual | `vue-tsc -b` + `vite build` | Script `npm run build` |
 
 ### Dependencias que todavía no forman parte del proyecto
 
-Vue Router, Pinia, Tailwind CSS, Lucide Vue, Axios, Vitest, Playwright,
+Pinia, Tailwind CSS, Lucide Vue, Axios, Vitest, Playwright,
 ESLint y Prettier no están instalados actualmente. Solo deben incorporarse
 cuando una tarea concreta los necesite, con justificación y actualización del
 lockfile. La arquitectura no autoriza asumir que esas herramientas ya existen.
@@ -58,10 +60,10 @@ La UI funcional vive en `src/`. La automatización de agentes, la documentación
 y Grafana tienen responsabilidades distintas y no deben mezclarse con
 componentes de producto.
 
-El scaffold actual contiene `App.vue`, `main.ts`, estilos, assets y el
-componente de ejemplo de Vite. Al iniciar la primera feature real, ese ejemplo
-debe reemplazarse de forma acotada por componentes del producto; no se deben
-crear capas vacías solo para completar una estructura ideal.
+`App.vue` muestra el `RouterView` y `main.ts` monta la aplicación con el
+router. El componente de ejemplo de Vite se eliminó al iniciar la primera
+feature real; no se deben crear capas vacías solo para completar una
+estructura ideal.
 
 ## Estructura objetivo de `src/`
 
@@ -72,8 +74,9 @@ crearse anticipadamente sin una necesidad concreta.
 src/
 ├── api/                         # Cliente HTTP y funciones por contrato
 ├── features/                    # Funcionalidad específica del producto
+│   └── auth/                    # Vistas, componentes, composables y tipos de login/registro
 ├── layouts/                     # Composición compartida de páginas
-├── router/                      # Solo cuando existan rutas reales
+├── router/                      # Rutas reales (login y register)
 ├── stores/                      # Estado compartido que justifique Pinia
 ├── shared/
 │   ├── ui/                      # Primitives sin conocimiento de una feature
@@ -107,8 +110,9 @@ pertenece a su feature, no a `shared/ui`.
 
 El estado local debe permanecer en el componente o composable. Pinia solo se
 agregará para sesión, wizards que crucen rutas u otro estado compartido real.
-Vue Router y layouts se incorporarán cuando exista más de una vista o una ruta
-de producto definida por requisitos y contratos.
+Vue Router ya está incorporado con la feature de autenticación (`/login` y
+`/register`); los layouts compartidos se agregarán cuando más de una feature
+necesite la misma composición de página.
 
 ## Flujo de datos
 
