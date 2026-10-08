@@ -307,4 +307,10 @@ tbody tr:last-child td {
     padding-inline: var(--space-4);
   }
 }
+
+@media (max-width: 899px) {
+  .publication-table__content-id {
+    display: none;
+  }
+}
 </style>

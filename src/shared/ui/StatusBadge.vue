@@ -38,52 +38,52 @@ withDefaults(
 }
 
 .ui-status-badge--neutral {
-  background: var(--color-surface-subtle);
+  background: var(--color-background-sunken);
   border-color: var(--color-border-default);
   color: var(--color-text-secondary);
 }
 
 .ui-status-badge--neutral .ui-status-badge__marker {
-  background: var(--color-neutral-500);
+  background: var(--color-border-strong);
 }
 
 .ui-status-badge--info {
-  background: var(--color-status-info-background);
-  border-color: var(--color-status-info-border);
-  color: var(--color-status-info-foreground);
+  background: var(--color-status-info-soft);
+  border-color: var(--color-status-info-solid);
+  color: var(--color-status-info-text);
 }
 
 .ui-status-badge--info .ui-status-badge__marker {
-  background: var(--color-status-info-border);
+  background: var(--color-status-info-solid);
 }
 
 .ui-status-badge--success {
-  background: var(--color-status-success-background);
-  border-color: var(--color-status-success-border);
-  color: var(--color-status-success-foreground);
+  background: var(--color-status-success-soft);
+  border-color: var(--color-status-success-solid);
+  color: var(--color-status-success-text);
 }
 
 .ui-status-badge--success .ui-status-badge__marker {
-  background: var(--color-status-success-border);
+  background: var(--color-status-success-solid);
 }
 
 .ui-status-badge--warning {
-  background: var(--color-status-warning-background);
-  border-color: var(--color-status-warning-border);
-  color: var(--color-status-warning-foreground);
+  background: var(--color-status-warning-soft);
+  border-color: var(--color-status-warning-solid);
+  color: var(--color-status-warning-text);
 }
 
 .ui-status-badge--warning .ui-status-badge__marker {
-  background: var(--color-status-warning-border);
+  background: var(--color-status-warning-solid);
 }
 
 .ui-status-badge--danger {
-  background: var(--color-status-danger-background);
-  border-color: var(--color-status-danger-border);
-  color: var(--color-status-danger-foreground);
+  background: var(--color-status-danger-soft);
+  border-color: var(--color-status-danger-solid);
+  color: var(--color-status-danger-text);
 }
 
 .ui-status-badge--danger .ui-status-badge__marker {
-  background: var(--color-status-danger-border);
+  background: var(--color-status-danger-solid);
 }
 </style>

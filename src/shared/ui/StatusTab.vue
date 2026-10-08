@@ -50,7 +50,7 @@ const emit = defineEmits<{
 }
 
 .ui-status-tab:hover:not(:disabled) {
-  background: var(--color-surface-subtle);
+  background: var(--color-background-sunken);
   color: var(--color-text-primary);
 }
 
@@ -65,18 +65,18 @@ const emit = defineEmits<{
 
 .ui-status-tab__count {
   align-items: center;
-  background: var(--color-surface-subtle);
+  background: var(--color-background-sunken);
   border-radius: var(--radius-full);
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   display: inline-flex;
   font-size: var(--font-size-caption);
   justify-content: center;
-  min-width: 20px;
+  min-width: var(--space-5);
   padding: 0 var(--space-1);
 }
 
 .ui-status-tab--active .ui-status-tab__count {
-  background: var(--color-status-info-background);
-  color: var(--color-status-info-foreground);
+  background: var(--color-status-info-soft);
+  color: var(--color-status-info-text);
 }
 </style>

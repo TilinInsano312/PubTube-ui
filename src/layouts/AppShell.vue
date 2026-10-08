@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import NavigationRail from './NavigationRail.vue'
 import Topbar from './Topbar.vue'
 import type { NavigationItemDefinition } from './types'
@@ -27,6 +27,7 @@ const emit = defineEmits<{
 
 const isMobileViewport = ref(false)
 const isMobileNavigationOpen = ref(false)
+const topbar = ref<{ focusNavigationToggle: () => void } | null>(null)
 let mediaQuery: MediaQueryList | undefined
 
 const showMobileOverlay = computed(
@@ -42,11 +43,20 @@ function syncViewport(event?: MediaQueryListEvent): void {
 }
 
 function toggleNavigation(): void {
-  isMobileNavigationOpen.value = !isMobileNavigationOpen.value
+  if (isMobileNavigationOpen.value) {
+    closeNavigation()
+    return
+  }
+
+  isMobileNavigationOpen.value = true
 }
 
 function closeNavigation(): void {
   isMobileNavigationOpen.value = false
+
+  if (isMobileViewport.value) {
+    void nextTick(() => topbar.value?.focusNavigationToggle())
+  }
 }
 
 function selectNavigationItem(id: string): void {
@@ -87,6 +97,7 @@ onBeforeUnmount(() => {
 
     <div class="app-shell__frame">
       <Topbar
+        ref="topbar"
         :title="props.title"
         :description="props.description"
         :navigation-open="isMobileNavigationOpen"

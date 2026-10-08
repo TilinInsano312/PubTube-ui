@@ -30,7 +30,12 @@ withDefaults(
     :disabled="disabled"
     :title="label"
   >
-    <component :is="icon" :size="20" :stroke-width="2" aria-hidden="true" />
+    <component
+      :is="icon"
+      class="ui-navigation-item__icon"
+      :stroke-width="2"
+      aria-hidden="true"
+    />
     <span v-if="!iconOnly" class="ui-navigation-item__label">{{ label }}</span>
   </button>
 </template>
@@ -56,7 +61,7 @@ withDefaults(
 
 .ui-navigation-item:hover:not(:disabled),
 .ui-navigation-item--active {
-  background: var(--color-surface-selected);
+  background: var(--color-action-primary-soft);
   color: var(--color-action-primary);
 }
 
@@ -67,6 +72,11 @@ withDefaults(
 .ui-navigation-item--icon-only {
   justify-content: center;
   padding: 0;
+}
+
+.ui-navigation-item__icon {
+  height: var(--icon-size-medium);
+  width: var(--icon-size-medium);
 }
 
 .ui-navigation-item:disabled {

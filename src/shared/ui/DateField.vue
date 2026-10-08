@@ -52,7 +52,7 @@ const emit = defineEmits<{
 }
 
 .ui-date-field__input {
-  background: var(--color-surface-default);
+  background: var(--color-background-surface);
   border: var(--border-width-default) solid var(--color-border-default);
   border-radius: var(--radius-md);
   color: var(--color-text-primary);
@@ -66,16 +66,16 @@ const emit = defineEmits<{
 }
 
 .ui-date-field__input:disabled {
-  background: var(--color-surface-subtle);
+  background: var(--color-background-sunken);
   cursor: not-allowed;
 }
 
 .ui-date-field__input--error {
-  border-color: var(--color-status-danger-border);
+  border-color: var(--color-status-danger-solid);
 }
 
 .ui-date-field__error {
-  color: var(--color-status-danger-foreground);
+  color: var(--color-status-danger-text);
   font-size: var(--font-size-caption);
   margin: 0;
 }

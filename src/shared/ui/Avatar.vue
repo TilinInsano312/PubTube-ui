@@ -19,10 +19,10 @@ withDefaults(
 <style scoped>
 .ui-avatar {
   align-items: center;
-  background: var(--color-blue-100);
-  border: var(--border-width-default) solid var(--color-blue-200);
+  background: var(--color-action-primary-soft-strong);
+  border: var(--border-width-default) solid var(--color-primary-200);
   border-radius: var(--radius-full);
-  color: var(--color-blue-800);
+  color: var(--color-action-primary-active);
   display: inline-flex;
   flex: 0 0 auto;
   font-size: var(--font-size-small);

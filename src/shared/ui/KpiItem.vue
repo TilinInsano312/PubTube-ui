@@ -17,7 +17,7 @@ withDefaults(
 <template>
   <div class="ui-kpi-item" :class="`ui-kpi-item--${status}`" role="group" :aria-label="label">
     <span class="ui-kpi-item__icon" aria-hidden="true">
-      <component :is="icon" :size="20" :stroke-width="2" />
+      <component :is="icon" class="ui-kpi-item__icon-svg" :stroke-width="2" />
     </span>
     <span class="ui-kpi-item__copy">
       <span class="ui-kpi-item__label">{{ label }}</span>
@@ -29,7 +29,7 @@ withDefaults(
 <style scoped>
 .ui-kpi-item {
   align-items: center;
-  background: var(--color-surface-default);
+  background: var(--color-background-surface);
   border: var(--border-width-default) solid var(--color-border-default);
   border-radius: var(--radius-lg);
   display: flex;
@@ -39,7 +39,7 @@ withDefaults(
 
 .ui-kpi-item__icon {
   align-items: center;
-  background: var(--color-surface-subtle);
+  background: var(--color-background-sunken);
   border-radius: var(--radius-md);
   color: var(--color-text-secondary);
   display: inline-flex;
@@ -47,6 +47,11 @@ withDefaults(
   height: var(--control-height-standard);
   justify-content: center;
   width: var(--control-height-standard);
+}
+
+.ui-kpi-item__icon-svg {
+  height: var(--icon-size-medium);
+  width: var(--icon-size-medium);
 }
 
 .ui-kpi-item__copy {
@@ -68,22 +73,22 @@ withDefaults(
 }
 
 .ui-kpi-item--info .ui-kpi-item__icon {
-  background: var(--color-status-info-background);
-  color: var(--color-status-info-foreground);
+  background: var(--color-status-info-soft);
+  color: var(--color-status-info-text);
 }
 
 .ui-kpi-item--success .ui-kpi-item__icon {
-  background: var(--color-status-success-background);
-  color: var(--color-status-success-foreground);
+  background: var(--color-status-success-soft);
+  color: var(--color-status-success-text);
 }
 
 .ui-kpi-item--warning .ui-kpi-item__icon {
-  background: var(--color-status-warning-background);
-  color: var(--color-status-warning-foreground);
+  background: var(--color-status-warning-soft);
+  color: var(--color-status-warning-text);
 }
 
 .ui-kpi-item--danger .ui-kpi-item__icon {
-  background: var(--color-status-danger-background);
-  color: var(--color-status-danger-foreground);
+  background: var(--color-status-danger-soft);
+  color: var(--color-status-danger-text);
 }
 </style>
