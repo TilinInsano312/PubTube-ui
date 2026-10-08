@@ -709,7 +709,19 @@ Para estilos propios de una vista o unidad de UI en Vue se prefiere:
 
 ## 23. Reutilización antes de creación
 
-Este documento no mantiene un catálogo de componentes ni define sus APIs.
+Los primitives reutilizables de la UI viven en [`src/shared/ui/`](../src/shared/ui/).
+El código fuente es la fuente de verdad de sus props y emits; este documento
+mantiene sus responsabilidades semánticas para evitar que una feature los
+acople al dominio:
+
+- `Button`, `IconButton` y `DateField` resuelven acciones y entrada de datos.
+- `Avatar` resuelve identidad visual sin conocer usuarios del backend.
+- `StatusBadge`, `StatusTab` y `KpiItem` expresan estados o métricas mediante
+  semántica visual, sin decidir nombres de dominio.
+- `NavigationRailItem` compone navegación accesible sin conocer rutas de negocio.
+
+Estos componentes no realizan HTTP, no administran estado global y no contienen
+lógica específica del Dashboard.
 
 Antes de crear una nueva pieza de UI se DEBE:
 
