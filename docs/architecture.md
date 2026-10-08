@@ -12,8 +12,9 @@ producto, integración HTTP, routing ni estado global. Por eso este documento
 separa explícitamente lo que existe de lo que queda planificado:
 
 - **Implementado:** Vue 3, Vite, TypeScript, Composition API, `<script setup>`,
-  tokens de diseño base, estilos globales base y scripts npm `dev`, `build` y
-  `preview`.
+  tokens de diseño base, estilos globales base, los patrones `AppShell`,
+  `NavigationRail` y `Topbar` en `src/layouts/`, y scripts npm `dev`, `build`
+  y `preview`.
 - **Implementado fuera de Vue:** provisioning de Grafana y su compose de
   observabilidad; Grafana es la UI técnica y consume Prometheus del backend.
 - **Planificado:** features de producto, cliente API, Vue Router, Pinia,
@@ -120,8 +121,10 @@ pertenece a su feature, no a `shared/ui`.
 
 El estado local debe permanecer en el componente o composable. Pinia solo se
 agregará para sesión, wizards que crucen rutas u otro estado compartido real.
-Vue Router y layouts se incorporarán cuando exista más de una vista o una ruta
-de producto definida por requisitos y contratos.
+Vue Router se incorporará cuando exista más de una ruta de producto definida por
+requisitos y contratos. Los layouts del shell se incorporan cuando una
+composición raíz real lo requiere; `src/layouts/` contiene actualmente los
+patrones compartidos de navegación y encabezado de US-D5.
 
 ## Flujo de datos
 

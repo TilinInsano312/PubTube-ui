@@ -399,17 +399,27 @@ El movimiento debe comunicar transición, cambio de estado o relación espacial.
 
 ### 11.1 Alcance de dispositivo
 
-PubTube UI soporta **desktop únicamente**.
+PubTube UI prioriza **desktop** y soporta el viewport compacto requerido por
+US-D5 mediante un drawer de navegación.
 
 El mínimo de referencia es **1280 × 720**, optimizando la experiencia para resoluciones habituales entre **1366 px y 1920 px de ancho**.
 
-Esto no autoriza layouts rígidos: la interfaz DEBE soportar correctamente redimensionamiento dentro del rango de escritorio definido.
+Esto no autoriza layouts rígidos: la interfaz DEBE soportar correctamente el
+redimensionamiento desktop y los límites responsive definidos por US-D5.
 
-No se implementan variantes móviles ni patrones táctiles específicos mientras no exista un requisito de producto.
+US-D5 define una excepción responsive explícita: la vista debe funcionar en
+desktop y en el drawer compacto requerido por la tarea.
+
+- En `>=900px`, el navigation rail permanece fijo, visible y mide 72px.
+- En `<900px`, el rail se presenta como drawer accesible activado desde el
+  botón de navegación del topbar; no se agrega una sidebar desktop de 240px.
+- El drawer debe poder abrirse, cerrarse y operarse con teclado, con foco
+  visible y nombres accesibles.
 
 ### 11.2 Navegación principal
 
-La navegación principal utiliza un **navigation rail fijo y no colapsable**.
+La navegación principal utiliza un **navigation rail fijo en desktop** y un
+**drawer responsive en viewport compacto**.
 
 - Su ancho efectivo pertenece a `--layout-navigation-rail-width`.
 - La barra superior utiliza `--layout-topbar-height` y el contenido de
@@ -417,7 +427,9 @@ La navegación principal utiliza un **navigation rail fijo y no colapsable**.
 - No se utiliza el antiguo token de sidebar para el layout aprobado.
 - El contenido principal DEBE considerar permanentemente su presencia.
 - El estado activo DEBE ser reconocible sin depender únicamente del color.
-- La navegación NO DEBE cambiar de patrón entre vistas sin una razón funcional.
+- La navegación NO DEBE cambiar de patrón entre vistas sin una razón funcional;
+  el cambio desktop/drawer definido arriba es una regla del shell, no de cada
+  feature.
 
 ### 11.3 Estructura de página
 
@@ -856,9 +868,10 @@ Evitar:
 - crear tokens distintos para el mismo significado;
 - crear una paleta por feature;
 - utilizar el color primario para todos los estados;
-- diseñar para mobile cuando no forma parte del alcance;
+- diseñar variantes responsive fuera de un requisito explícito;
 - implementar dark mode preventivamente;
-- hacer colapsable el navigation rail sin un requisito explícito;
+- hacer colapsable el navigation rail fuera del comportamiento responsive
+  definido por US-D5;
 - introducir selección múltiple sin una operación de lote real;
 - utilizar modales o feedback global para confirmaciones triviales;
 - mostrar errores lejos del contexto que los produjo cuando pueden mostrarse localmente;
