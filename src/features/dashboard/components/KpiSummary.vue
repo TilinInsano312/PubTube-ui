@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CheckCircle2, CircleX, Clock3 } from '@lucide/vue'
 import { KpiItem } from '../../../shared/ui'
-import type { DashboardCounts } from '../dashboard.types'
+import type { DashboardCounts } from '../../../api/dashboard.types'
 
 withDefaults(
   defineProps<{

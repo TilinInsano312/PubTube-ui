@@ -7,18 +7,19 @@ funcional del Módulo 4. Debe leerse junto con `AGENTS.md`, el README y la tarea
 que se esté ejecutando.
 
 El frontend Vue ya está inicializado como un scaffold funcional de Vite y cuenta
-con una base de sistema visual. El repositorio aún no contiene vistas de
-producto, integración HTTP, routing ni estado global. Por eso este documento
-separa explícitamente lo que existe de lo que queda planificado:
+con una base de sistema visual, el shell de US-D5 y el primer cliente HTTP de
+counts. El repositorio aún no contiene routing ni estado global. Por eso este
+documento separa explícitamente lo que existe de lo que queda planificado:
 
 - **Implementado:** Vue 3, Vite, TypeScript, Composition API, `<script setup>`,
   tokens de diseño base, estilos globales base, los patrones `AppShell`,
-  `NavigationRail` y `Topbar` en `src/layouts/`, y scripts npm `dev`, `build`
-  y `preview`.
+  `NavigationRail` y `Topbar` en `src/layouts/`, el cliente tipado de counts de
+  dashboard en `src/api/`, y scripts npm `dev`, `build` y `preview`.
 - **Implementado fuera de Vue:** provisioning de Grafana y su compose de
   observabilidad; Grafana es la UI técnica y consume Prometheus del backend.
-- **Planificado:** features de producto, cliente API, Vue Router, Pinia,
-  estilos/componentes de UI adicionales y pruebas frontend.
+- **Planificado:** features de producto adicionales, cliente API para contratos
+  aún no confirmados, Vue Router, Pinia, estilos/componentes de UI adicionales
+  y pruebas frontend.
 - **No disponible en este repositorio:** el backend, sus endpoints efectivos,
   RabbitMQ, PostgreSQL y los contratos funcionales completos. No deben
   inventarse para avanzar una pantalla.
@@ -100,10 +101,11 @@ componentes permanecen locales al componente, preferentemente mediante
 
 ### `api/`
 
-Será el único punto de integración HTTP de la UI. Se prioriza `fetch` mediante
-un wrapper pequeño y tipado. Las funciones `*.api.ts` deben reflejar endpoints
-que existan en el contrato real del backend; no deben contener componentes ni
-estado visual, ni inventar rutas, payloads o respuestas.
+Es el único punto de integración HTTP de la UI. Se prioriza `fetch` mediante
+funciones pequeñas y tipadas. `src/api/dashboard.api.ts` refleja únicamente el
+contrato `GET /api/dashboard` confirmado por US-D5, con `from` y `to` opcionales.
+Las funciones `*.api.ts` no deben contener componentes ni estado visual, ni
+inventar rutas, payloads o respuestas.
 
 ### `features/`
 
@@ -142,9 +144,10 @@ Cliente HTTP compartido
 Backend del sistema
 ```
 
-El scaffold actual todavía no implementa este flujo. Las decisiones de
+El flujo de counts de dashboard implementa este recorrido. Las decisiones de
 autenticación, errores, polling o actualización en tiempo real deben basarse
-en el contrato del backend correspondiente.
+en el contrato del backend correspondiente; para US-D5 no se agregan polling,
+WebSocket, SSE ni retry automático.
 
 ## Integración y contratos
 
