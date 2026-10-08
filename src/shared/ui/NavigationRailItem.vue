@@ -7,10 +7,12 @@ withDefaults(
     icon: Component
     active?: boolean
     disabled?: boolean
+    iconOnly?: boolean
   }>(),
   {
     active: false,
     disabled: false,
+    iconOnly: false,
   },
 )
 </script>
@@ -18,7 +20,10 @@ withDefaults(
 <template>
   <button
     class="ui-navigation-item"
-    :class="{ 'ui-navigation-item--active': active }"
+    :class="{
+      'ui-navigation-item--active': active,
+      'ui-navigation-item--icon-only': iconOnly,
+    }"
     type="button"
     :aria-label="label"
     :aria-current="active ? 'page' : undefined"
@@ -26,7 +31,7 @@ withDefaults(
     :title="label"
   >
     <component :is="icon" :size="20" :stroke-width="2" aria-hidden="true" />
-    <span class="ui-navigation-item__label">{{ label }}</span>
+    <span v-if="!iconOnly" class="ui-navigation-item__label">{{ label }}</span>
   </button>
 </template>
 
@@ -59,18 +64,12 @@ withDefaults(
   font-weight: var(--font-weight-semibold);
 }
 
-.ui-navigation-item:disabled {
-  cursor: not-allowed;
+.ui-navigation-item--icon-only {
+  justify-content: center;
+  padding: 0;
 }
 
-@media (max-width: 899px) {
-  .ui-navigation-item__label {
-    display: none;
-  }
-
-  .ui-navigation-item {
-    justify-content: center;
-    padding: 0;
-  }
+.ui-navigation-item:disabled {
+  cursor: not-allowed;
 }
 </style>
