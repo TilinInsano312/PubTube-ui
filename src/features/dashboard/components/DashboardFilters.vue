@@ -112,12 +112,24 @@ const emit = defineEmits<{
   min-width: var(--space-16);
 }
 
+@media (max-width: 899px) {
+  .dashboard-filters__controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-filters__controls :deep(.ui-button) {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
 @media (max-width: 599px) {
   .dashboard-filters__controls {
     grid-template-columns: 1fr;
   }
 
   .dashboard-filters__controls :deep(.ui-button) {
+    grid-column: auto;
     width: 100%;
   }
 }

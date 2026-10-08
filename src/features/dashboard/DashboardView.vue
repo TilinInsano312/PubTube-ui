@@ -1,79 +1,106 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
+import { Bell, RefreshCw } from '@lucide/vue'
+import type { DashboardErrorCode } from '../../api/dashboard.types'
+import AppShell from '../../layouts/AppShell.vue'
+import { Button, IconButton } from '../../shared/ui'
 import DashboardFilters from './components/DashboardFilters.vue'
-import PublicationList from './components/PublicationList.vue'
-import StatusSummary from './components/StatusSummary.vue'
-import { getMockPublications } from './dashboard.mock'
-import type {
-  DashboardDateFilters,
-  Publication,
-  PublicationStatus,
-  PublicationStatusFilter,
-} from './dashboard.types'
-import { STATUS_FILTER_LABELS } from './dashboard.types'
+import KpiSummary from './components/KpiSummary.vue'
+import PublicationTable from './components/PublicationTable.vue'
+import type { DashboardDateFilters } from './dashboard.types'
+import { useDashboardCounts } from './useDashboardCounts'
 
 const defaultFilters: DashboardDateFilters = {
-  from: '2026-09-01',
-  to: '2026-09-30',
+  from: '',
+  to: '',
 }
 
 const filters = reactive<DashboardDateFilters>({ ...defaultFilters })
-const publications = ref<Publication[]>([])
-const activeStatus = ref<PublicationStatusFilter>('all')
-const isLoading = ref(false)
-const hasLoaded = ref(false)
-const errorMessage = ref('')
-let requestSequence = 0
+const dashboard = useDashboardCounts()
+const counts = dashboard.counts
 
-const counts = computed<Record<PublicationStatus, number>>(() => ({
-  scheduled: publications.value.filter(({ status }) => status === 'scheduled').length,
-  published: publications.value.filter(({ status }) => status === 'published').length,
-  failed: publications.value.filter(({ status }) => status === 'failed').length,
-}))
+const errorCopy: Record<DashboardErrorCode, { title: string; description: string }> = {
+  UNAUTHORIZED: {
+    title: 'Dashboard no autorizado',
+    description: 'No tienes autorización para consultar los conteos de publicaciones.',
+  },
+  INVALID_DATE_RANGE: {
+    title: 'Revisa el rango de fechas seleccionado.',
+    description: 'Selecciona un rango válido e inténtalo nuevamente.',
+  },
+  RATE_LIMIT_EXCEEDED: {
+    title: 'Se realizaron demasiadas solicitudes.',
+    description: 'Intenta nuevamente en unos momentos.',
+  },
+  DASHBOARD_ERROR: {
+    title: 'No pudimos cargar el dashboard.',
+    description: 'Intenta nuevamente.',
+  },
+  DASHBOARD_UNAVAILABLE: {
+    title: 'Dashboard no disponible',
+    description: 'Los datos de publicaciones no están disponibles en este momento.',
+  },
+  DASHBOARD_TIMEOUT: {
+    title: 'No pudimos cargar el dashboard.',
+    description: 'Intenta nuevamente.',
+  },
+  NETWORK_ERROR: {
+    title: 'No pudimos conectar con el dashboard.',
+    description: 'Comprueba la conexión e inténtalo nuevamente.',
+  },
+  INVALID_RESPONSE: {
+    title: 'No pudimos interpretar la respuesta del dashboard.',
+    description: 'Intenta nuevamente.',
+  },
+}
 
-const visiblePublications = computed(() => {
-  if (activeStatus.value === 'all') {
-    return publications.value
+const dateRangeError = computed(() => {
+  if (!filters.from || !filters.to || filters.from <= filters.to) {
+    return ''
   }
 
-  return publications.value.filter(({ status }) => status === activeStatus.value)
+  return 'La fecha Desde debe ser anterior o igual a Hasta.'
 })
 
-const activeStatusLabel = computed(() => STATUS_FILTER_LABELS[activeStatus.value])
+const isBusy = computed(
+  () => dashboard.state.value === 'idle' || dashboard.isLoading.value,
+)
+
+const hasCounts = computed(() => {
+  const counts = dashboard.counts.value
+  return counts.scheduled + counts.published + counts.failed > 0
+})
+
+const isError = computed(() => dashboard.state.value === 'error')
+
+const currentErrorCopy = computed(
+  () => errorCopy[dashboard.error.value?.code ?? 'NETWORK_ERROR'],
+)
+
+const detailEmptyTitle = computed(() =>
+  hasCounts.value ? 'Detalle de publicaciones no disponible' : '',
+)
+
+const detailEmptyDescription = computed(() =>
+  hasCounts.value
+    ? 'Los conteos están disponibles; el backend aún no entrega publicaciones individuales.'
+    : '',
+)
 
 async function loadDashboard(): Promise<void> {
-  const currentRequest = ++requestSequence
-  isLoading.value = true
-  errorMessage.value = ''
-  hasLoaded.value = false
-
-  try {
-    const nextPublications = await getMockPublications(filters)
-
-    if (currentRequest !== requestSequence) {
-      return
-    }
-
-    publications.value = nextPublications
-    hasLoaded.value = true
-  } catch (error) {
-    if (currentRequest !== requestSequence) {
-      return
-    }
-
-    publications.value = []
-    errorMessage.value = error instanceof Error ? error.message : 'No fue posible cargar las publicaciones.'
-  } finally {
-    if (currentRequest === requestSequence) {
-      isLoading.value = false
-    }
+  if (dateRangeError.value) {
+    return
   }
+
+  await dashboard.load({
+    from: filters.from || undefined,
+    to: filters.to || undefined,
+  })
 }
 
 function resetFilters(): void {
   filters.from = defaultFilters.from
   filters.to = defaultFilters.to
-  activeStatus.value = 'all'
   void loadDashboard()
 }
 
@@ -83,80 +110,83 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="dashboard-page">
-    <header class="topbar">
-      <div class="brand" aria-label="PubTube panel editorial">
-        <span class="brand-mark" aria-hidden="true">PT</span>
-        <span class="brand-name">PubTube</span>
-        <span class="brand-context">Panel editorial</span>
-      </div>
-      <div class="environment">
-        <span class="environment-dot" aria-hidden="true"></span>
-        Entorno local · Datos de demostración
-      </div>
-    </header>
-
-    <main class="dashboard-main">
-      <section class="page-heading" aria-labelledby="page-title">
-        <div>
-          <p class="eyebrow">Módulo 4 · Publicaciones</p>
-          <h1 id="page-title">Dashboard editorial</h1>
-          <p class="page-description">
-            Visualiza el estado de tus publicaciones y encuentra rápidamente los elementos que necesitan atención.
-          </p>
-        </div>
-        <button class="primary-button" type="button" :disabled="isLoading" @click="loadDashboard">
-          <span class="icon" aria-hidden="true">↻</span>
-          Actualizar datos
-        </button>
-      </section>
-
-      <StatusSummary
-        v-if="!isLoading && !errorMessage"
-        :counts="counts"
-        :active-status="activeStatus"
-        @select="activeStatus = $event"
+  <AppShell
+    title="Dashboard editorial"
+    description="Visualiza los conteos de publicaciones y el estado disponible de tu operación editorial."
+  >
+    <template #actions>
+      <IconButton
+        :icon="Bell"
+        label="Notificaciones"
+        title="Notificaciones no disponibles"
+        disabled
       />
+      <IconButton
+        :icon="RefreshCw"
+        label="Actualizar dashboard"
+        :loading="isBusy"
+        @click="loadDashboard"
+      />
+    </template>
 
+    <div class="dashboard-workspace">
       <DashboardFilters
         :from="filters.from"
         :to="filters.to"
-        :disabled="isLoading"
+        :disabled="isBusy"
+        :from-error="dateRangeError"
+        :to-error="dateRangeError"
         @update:from="filters.from = $event"
         @update:to="filters.to = $event"
         @reset="resetFilters"
         @apply="loadDashboard"
       />
 
-      <section v-if="isLoading" class="state-card" role="status" aria-live="polite">
-        <span class="loading-spinner" aria-hidden="true"></span>
-        <h2>Cargando publicaciones</h2>
-        <div class="skeleton-stack" aria-hidden="true">
-          <span class="skeleton-line"></span>
-          <span class="skeleton-line"></span>
-          <span class="skeleton-line"></span>
-        </div>
+      <KpiSummary :counts="counts" :loading="isBusy" />
+
+      <section v-if="isError" class="dashboard-error" role="alert" aria-labelledby="dashboard-error-title">
+        <h2 id="dashboard-error-title" class="dashboard-error__title">
+          {{ currentErrorCopy.title }}
+        </h2>
+        <p class="dashboard-error__description">{{ currentErrorCopy.description }}</p>
+        <Button variant="secondary" :disabled="isBusy" @click="loadDashboard">
+          Intentar nuevamente
+        </Button>
       </section>
 
-      <section v-else-if="errorMessage" class="state-card" role="alert">
-        <span class="state-icon state-icon--error" aria-hidden="true">!</span>
-        <h2>No pudimos cargar el dashboard</h2>
-        <p>Revisa el rango seleccionado e inténtalo nuevamente.</p>
-        <p class="error-detail">{{ errorMessage }}</p>
-        <button class="secondary-button" type="button" @click="loadDashboard">Reintentar</button>
-      </section>
-
-      <PublicationList
+      <PublicationTable
         v-else
-        :publications="visiblePublications"
-        :status-label="activeStatusLabel"
-        @clear-filters="resetFilters"
+        :items="[]"
+        :loading="isBusy"
+        :empty-title="detailEmptyTitle"
+        :empty-description="detailEmptyDescription"
       />
-
-      <p v-if="hasLoaded" class="filter-hint" aria-live="polite">
-        <span class="filter-hint-dot" aria-hidden="true"></span>
-        Vista actualizada con {{ visiblePublications.length }} publicaciones.
-      </p>
-    </main>
-  </div>
+    </div>
+  </AppShell>
 </template>
+
+<style scoped>
+.dashboard-workspace {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.dashboard-error {
+  background: var(--color-status-danger-background);
+  border: var(--border-width-default) solid var(--color-status-danger-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.dashboard-error__title {
+  color: var(--color-status-danger-foreground);
+  font-size: var(--font-size-heading-3);
+  line-height: var(--line-height-heading-3);
+  margin: 0;
+}
+
+.dashboard-error__description {
+  color: var(--color-text-primary);
+  margin: var(--space-2) 0 var(--space-4);
+}
+</style>
