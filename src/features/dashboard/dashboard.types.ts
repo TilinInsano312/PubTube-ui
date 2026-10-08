@@ -13,6 +13,14 @@ export interface Publication {
   error?: string
 }
 
+export interface PublicationListItem {
+  id: string
+  contentLabel: string
+  contentId?: string
+  status: PublicationStatus
+  scheduledAt: string
+}
+
 export interface DashboardDateFilters {
   from: string
   to: string
