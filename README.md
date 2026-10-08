@@ -25,6 +25,8 @@ Incluye estado del ciclo, perfiles, skills, orquestador, harness, plantillas y t
 Consultar [AGENTS.md](AGENTS.md), la [guía de desarrollo](docs/agentic-development.md),
 el [Design System](docs/design-system.md) del frontend y el
 [formato de tareas JSONL](tasks/README.md).
+El estado y la trazabilidad de US-D5 están en
+[docs/us-d5-status.md](docs/us-d5-status.md).
 
 Requisitos: Python 3.10 o posterior; pytest solo para ejecutar tests.
 El código de la fábrica usa la biblioteca estándar, sin dependencias frontend.
