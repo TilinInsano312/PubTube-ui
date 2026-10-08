@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import DashboardView from './features/dashboard/DashboardView.vue'
+import StudioWorkspace from './features/studio/StudioWorkspace.vue'
 </script>
 
 <template>
-  <DashboardView />
+  <StudioWorkspace />
 </template>
