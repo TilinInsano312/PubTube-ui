@@ -60,7 +60,13 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Prepare a complete brief from a task JSONL contract.")
     parser.add_argument("path", help="Task JSONL file or directory")
     parser.add_argument("--task-id", required=True, help="Exact task_id to prepare")
-    parser.add_argument("--baseline", help="Explicit Git baseline used to enforce changed-file scope")
+    parser.add_argument(
+        "--baseline",
+        help=(
+            "Explicit Git commit captured with 'git rev-parse HEAD' at task start; "
+            "there is no implicit baseline"
+        ),
+    )
     parser.add_argument("--repository", default=".", help="Repository root for scope enforcement")
     args = parser.parse_args(argv)
     try:

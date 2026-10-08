@@ -37,7 +37,10 @@ no ejecutan comandos declarados por una tarea y no hacen merge.
 
 ### Flujo avanzado
 
-1. Verificar rama, base y cambios previos. Leer AGENTS, README y docs relevantes.
+1. Verificar rama, base y cambios previos. Al comenzar cada tarea, capturar el
+   `HEAD` con `git rev-parse HEAD` y usar exclusivamente ese commit como baseline
+   de su scope. En una secuencia, no reutilizar `develop` ni el baseline de la
+   tarea anterior. Leer AGENTS, README y docs relevantes.
    Para tareas que afecten interfaz, estilos, tokens, layout visual o
    presentación, `docs/design-system.md` es documentación aplicable y debe
    leerse antes de implementar.
@@ -111,6 +114,10 @@ python -m agents doctor
 python -m agents.contracts tasks/
 python -m agents.harness.task_runner tasks/us-d7-t4-grafana.jsonl --task-id US-D7-T4-00
 ```
+
+Para verificar scope, pasar mediante `--baseline` el commit capturado al inicio
+de esa tarea. Si se omite, el runner solo prepara el brief y no inventa un
+baseline por defecto.
 
 US-D7-T4 se contrata por separado; el ejemplo documentado solo comprueba la
 generación de un brief.

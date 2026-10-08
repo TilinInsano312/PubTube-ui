@@ -72,3 +72,22 @@ def test_collect_changed_paths_includes_all_git_states(tmp_path: Path) -> None:
         "unstaged.txt",
         "untracked.txt",
     }
+
+
+def test_each_sequential_task_uses_head_captured_at_its_start(tmp_path: Path) -> None:
+    git(tmp_path, "init")
+    git(tmp_path, "config", "user.email", "factory@example.invalid")
+    git(tmp_path, "config", "user.name", "Factory Test")
+    (tmp_path / "first-task.txt").write_text("base\n", encoding="utf-8")
+    (tmp_path / "second-task.txt").write_text("base\n", encoding="utf-8")
+    git(tmp_path, "add", ".")
+    git(tmp_path, "commit", "-m", "initial")
+
+    (tmp_path / "first-task.txt").write_text("task one\n", encoding="utf-8")
+    git(tmp_path, "add", "first-task.txt")
+    git(tmp_path, "commit", "-m", "complete first task")
+    second_task_baseline = git(tmp_path, "rev-parse", "HEAD")
+
+    (tmp_path / "second-task.txt").write_text("task two\n", encoding="utf-8")
+
+    assert collect_changed_paths(tmp_path, second_task_baseline) == {"second-task.txt"}

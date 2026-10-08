@@ -20,12 +20,14 @@ observabilidad sin desplegar Grafana.
 
 Desde la raíz, ejecutar `python -m agents.harness.run_agent_loop "Objetivo" --ac "Resultado" --scope "agents/"`.
 El comando genera un brief; no implementa la tarea ni prueba un AC por sí mismo.
-Para preparar un contrato completo o comprobar su scope desde un baseline
-explícito:
+Para preparar un contrato completo o comprobar su scope, capturar primero el
+`HEAD` existente al comenzar esa tarea. Cada tarea secuencial necesita su propio
+baseline; el runner no usa `develop` ni ningún otro baseline implícito:
 
 ```sh
+git rev-parse HEAD
 python -m agents.harness.task_runner tasks/us-d7-t4-grafana.jsonl --task-id US-D7-T4-00
-python -m agents.harness.task_runner tasks/us-d7-t4-grafana.jsonl --task-id US-D7-T4-00 --baseline develop
+python -m agents.harness.task_runner tasks/us-d7-t4-grafana.jsonl --task-id US-D7-T4-00 --baseline <commit-capturado>
 ```
 
 El runner no ejecuta los comandos declarados ni modifica Git.
