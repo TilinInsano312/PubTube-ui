@@ -7,9 +7,13 @@ const props = withDefaults(
   defineProps<{
     items: PublicationListItem[]
     loading?: boolean
+    emptyTitle?: string
+    emptyDescription?: string
   }>(),
   {
     loading: false,
+    emptyTitle: '',
+    emptyDescription: '',
   },
 )
 
@@ -58,6 +62,10 @@ function selectStatus(status: PublicationStatusFilter): void {
 }
 
 function emptyTitle(): string {
+  if (props.emptyTitle) {
+    return props.emptyTitle
+  }
+
   if (activeStatus.value === 'all') {
     return 'No hay publicaciones en este período.'
   }
@@ -66,6 +74,10 @@ function emptyTitle(): string {
 }
 
 function emptyDescription(): string {
+  if (props.emptyDescription) {
+    return props.emptyDescription
+  }
+
   return activeStatus.value === 'all'
     ? 'Prueba con otro rango de fechas.'
     : 'Prueba con otro estado o rango de fechas.'

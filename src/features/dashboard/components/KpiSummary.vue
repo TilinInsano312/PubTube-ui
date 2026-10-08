@@ -104,7 +104,7 @@ const cards = [
   width: var(--space-10);
 }
 
-@media (max-width: 599px) {
+@media (max-width: 899px) {
   .kpi-summary {
     grid-template-columns: 1fr;
   }
