@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { Menu } from '@lucide/vue'
 import { IconButton } from '../shared/ui'
+
+const navigationToggle = ref<{ focus: () => void } | null>(null)
 
 defineProps<{
   title: string
@@ -11,15 +14,20 @@ defineProps<{
 const emit = defineEmits<{
   toggleNavigation: []
 }>()
+
+defineExpose({
+  focusNavigationToggle: () => navigationToggle.value?.focus(),
+})
 </script>
 
 <template>
   <header class="topbar">
     <div class="topbar__mobile-menu">
       <IconButton
+        ref="navigationToggle"
         :icon="Menu"
-        label="Abrir navegación"
-        :pressed="navigationOpen"
+        :label="navigationOpen ? 'Cerrar navegación' : 'Abrir navegación'"
+        :expanded="navigationOpen"
         @click="emit('toggleNavigation')"
       />
     </div>

@@ -52,6 +52,7 @@ function selectItem(item: NavigationItemDefinition): void {
     class="navigation-rail"
     :class="{ 'navigation-rail--mobile-open': mobileOpen }"
     aria-label="Navegación principal"
+    @keydown.esc="emit('close')"
   >
     <div class="navigation-rail__header">
       <div class="navigation-rail__brand" role="img" aria-label="PubTube">
@@ -64,6 +65,7 @@ function selectItem(item: NavigationItemDefinition): void {
         :icon="X"
         label="Cerrar navegación"
         size="small"
+        autofocus
         @click="emit('close')"
       />
     </div>
@@ -99,6 +101,7 @@ function selectItem(item: NavigationItemDefinition): void {
   position: fixed;
   top: 0;
   transition: transform var(--motion-duration-standard) var(--motion-easing-standard);
+  visibility: visible;
   width: var(--layout-navigation-rail-width);
   z-index: var(--z-navigation);
 }
@@ -154,6 +157,7 @@ function selectItem(item: NavigationItemDefinition): void {
   .navigation-rail {
     box-shadow: var(--shadow-lg);
     transform: translateX(-100%);
+    visibility: hidden;
     width: min(
       calc(var(--layout-navigation-rail-width) * 3),
       calc(100vw - var(--space-8))
@@ -162,6 +166,7 @@ function selectItem(item: NavigationItemDefinition): void {
 
   .navigation-rail--mobile-open {
     transform: translateX(0);
+    visibility: visible;
   }
 
   .navigation-rail__header {

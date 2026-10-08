@@ -172,14 +172,14 @@ onMounted(() => {
 }
 
 .dashboard-error {
-  background: var(--color-status-danger-background);
-  border: var(--border-width-default) solid var(--color-status-danger-border);
+  background: var(--color-status-danger-soft);
+  border: var(--border-width-default) solid var(--color-status-danger-solid);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
 }
 
 .dashboard-error__title {
-  color: var(--color-status-danger-foreground);
+  color: var(--color-status-danger-text);
   font-size: var(--font-size-heading-3);
   line-height: var(--line-height-heading-3);
   margin: 0;

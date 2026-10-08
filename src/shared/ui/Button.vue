@@ -67,13 +67,13 @@ withDefaults(
 }
 
 .ui-button--secondary {
-  background: var(--color-surface-default);
+  background: var(--color-background-surface);
   border-color: var(--color-border-default);
   color: var(--color-text-primary);
 }
 
 .ui-button--secondary:hover:not(:disabled) {
-  background: var(--color-surface-subtle);
+  background: var(--color-background-sunken);
   border-color: var(--color-border-strong);
 }
 
@@ -83,7 +83,7 @@ withDefaults(
 }
 
 .ui-button--ghost:hover:not(:disabled) {
-  background: var(--color-surface-subtle);
+  background: var(--color-background-sunken);
   color: var(--color-text-primary);
 }
 

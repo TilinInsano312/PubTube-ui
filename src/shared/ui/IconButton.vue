@@ -1,5 +1,12 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { Component } from 'vue'
+
+const button = ref<HTMLButtonElement | null>(null)
+
+defineExpose({
+  focus: () => button.value?.focus(),
+})
 
 withDefaults(
   defineProps<{
@@ -8,6 +15,7 @@ withDefaults(
     type?: 'button' | 'submit' | 'reset'
     disabled?: boolean
     pressed?: boolean
+    expanded?: boolean
     loading?: boolean
     size?: 'small' | 'medium' | 'large'
   }>(),
@@ -15,6 +23,7 @@ withDefaults(
     type: 'button',
     disabled: false,
     pressed: undefined,
+    expanded: undefined,
     loading: false,
     size: 'medium',
   },
@@ -23,17 +32,19 @@ withDefaults(
 
 <template>
   <button
+    ref="button"
     class="ui-icon-button"
     :class="`ui-icon-button--${size}`"
     :type="type"
     :aria-label="label"
     :aria-pressed="pressed"
+    :aria-expanded="expanded"
     :aria-busy="loading || undefined"
     :disabled="disabled || loading"
   >
     <component
       :is="icon"
-      :size="size === 'small' ? 16 : size === 'large' ? 24 : 20"
+      class="ui-icon-button__icon"
       :stroke-width="2"
       aria-hidden="true"
     />
@@ -70,9 +81,24 @@ withDefaults(
   width: var(--space-12);
 }
 
+.ui-icon-button__icon {
+  height: var(--icon-size-medium);
+  width: var(--icon-size-medium);
+}
+
+.ui-icon-button--small .ui-icon-button__icon {
+  height: var(--icon-size-small);
+  width: var(--icon-size-small);
+}
+
+.ui-icon-button--large .ui-icon-button__icon {
+  height: var(--icon-size-large);
+  width: var(--icon-size-large);
+}
+
 .ui-icon-button:hover:not(:disabled),
 .ui-icon-button[aria-pressed='true'] {
-  background: var(--color-surface-subtle);
+  background: var(--color-background-sunken);
   color: var(--color-text-primary);
 }
 

@@ -105,7 +105,10 @@ Es el único punto de integración HTTP de la UI. Se prioriza `fetch` mediante
 funciones pequeñas y tipadas. `src/api/dashboard.api.ts` refleja únicamente el
 contrato `GET /api/dashboard` confirmado por US-D5, con `from` y `to` opcionales.
 Las funciones `*.api.ts` no deben contener componentes ni estado visual, ni
-inventar rutas, payloads o respuestas.
+inventar rutas, payloads o respuestas. `useDashboardCounts` traduce la
+respuesta a `loading`, `success`, `empty` y `error`, conservando los códigos
+confirmados `401`, `422`, `429`, `500`, `503` y `504`; no agrega retry,
+polling ni transporte en tiempo real.
 
 ### `features/`
 

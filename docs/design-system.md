@@ -799,6 +799,29 @@ Una feature NO DEBE utilizar overrides profundos para convertir una solución co
 
 Si aparece una necesidad estable y reutilizable, debe evolucionarse el sistema de forma explícita en vez de esconder la diferencia dentro de una feature.
 
+### 23.1 Patterns de shell y dashboard
+
+Los patterns compuestos de US-D5 viven en `src/layouts/` y en la feature de
+dashboard. Sus contratos efectivos se mantienen en el código, con estas reglas
+de composición:
+
+- `AppShell` compone `NavigationRail`, `Topbar` y el contenido mediante slots;
+  no conoce endpoints ni datos del dashboard.
+- `NavigationRail` reutiliza `NavigationRailItem`, expone selección de sección
+  y conserva un rail de 72px desde `>=900px`; por debajo usa un drawer accesible.
+- `Topbar` recibe título y descripción y expone el slot de acciones globales.
+- `DashboardFilters` sólo emite cambios de fechas, `apply` y `reset`; no realiza
+  HTTP ni agrega filtros de dominio no confirmados.
+- `KpiSummary` recibe counts y controla únicamente su presentación de loading o
+  datos disponibles.
+- `PublicationTable` recibe `PublicationListItem`; permanece vacía cuando no
+  existe un contrato de detalle y no fabrica filas productivas.
+
+La composición responsive usa el límite `900px`: rail persistente en desktop,
+drawer en viewport compacto, KPI en una columna y filtros con wrap. El estado
+activo, los badges y los mensajes de error siempre incluyen texto o semántica
+accesible además de color.
+
 ---
 
 ## 24. Evolución y gobierno
