@@ -69,9 +69,8 @@ El título/contenido visual es opcional para el mínimo de la tabla. Hasta que
 esa evidencia exista, no se debe inventar endpoint, payload, mock productivo,
 thumbnail, attempts ni `lastError`.
 
-## Próximo estado de GitHub
+## Estado administrativo de GitHub
 
-Después de integrar esta documentación en `develop`, se puede cerrar la #5
-como tracking de la entrega implementable y cerrar las Issues #6–#11 y #13
-con sus PR correspondientes. La #12 debe permanecer abierta y etiquetada como
-`BLOCKED` hasta que aparezca el contrato backend.
+La documentación quedó integrada en `develop` mediante la PR #21. La #5 y las
+Issues #6–#11 y #13 están cerradas con sus PR correspondientes. La #12 sigue
+abierta y etiquetada como `BLOCKED` hasta que aparezca el contrato backend.
