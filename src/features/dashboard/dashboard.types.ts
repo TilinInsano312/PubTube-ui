@@ -18,6 +18,12 @@ export interface DashboardDateFilters {
   to: string
 }
 
+export interface DashboardCounts {
+  scheduled: number
+  published: number
+  failed: number
+}
+
 export const STATUS_LABELS: Record<PublicationStatus, string> = {
   scheduled: 'Programadas',
   published: 'Publicadas',

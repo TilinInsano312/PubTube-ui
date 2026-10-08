@@ -1,80 +1,124 @@
 <script setup lang="ts">
-import type { PublicationStatusFilter } from '../dashboard.types'
-import { STATUS_FILTER_LABELS } from '../dashboard.types'
+import { RotateCcw } from '@lucide/vue'
+import { Button, DateField, IconButton } from '../../../shared/ui'
 
-defineProps<{
-  from: string
-  to: string
-  status: PublicationStatusFilter
-  isLoading: boolean
-}>()
+withDefaults(
+  defineProps<{
+    from: string
+    to: string
+    disabled?: boolean
+    fromError?: string
+    toError?: string
+  }>(),
+  {
+    disabled: false,
+    fromError: '',
+    toError: '',
+  },
+)
 
 const emit = defineEmits<{
   'update:from': [value: string]
   'update:to': [value: string]
-  'update:status': [value: PublicationStatusFilter]
+  apply: []
   reset: []
-  refresh: []
 }>()
-
-const statusOptions = Object.entries(STATUS_FILTER_LABELS) as [PublicationStatusFilter, string][]
 </script>
 
 <template>
-  <section class="filter-panel" aria-labelledby="filters-title">
-    <div class="filter-heading">
+  <section class="dashboard-filters" aria-labelledby="dashboard-filters-title">
+    <div class="dashboard-filters__heading">
       <div>
-        <p class="eyebrow">Filtros</p>
-        <h2 id="filters-title">Ajusta la vista del dashboard</h2>
+        <p class="dashboard-filters__eyebrow">Período</p>
+        <h2 id="dashboard-filters-title" class="dashboard-filters__title">
+          Filtra las publicaciones por fecha
+        </h2>
       </div>
-      <button class="quiet-button" type="button" :disabled="isLoading" @click="emit('reset')">
-        Restablecer filtros
-      </button>
+
+      <IconButton
+        :icon="RotateCcw"
+        label="Restablecer filtros"
+        title="Restablecer filtros"
+        size="small"
+        :disabled="disabled"
+        @click="emit('reset')"
+      />
     </div>
 
-    <div class="filter-controls">
-      <div class="field">
-        <label for="date-from">Desde</label>
-        <input
-          id="date-from"
-          type="date"
-          :value="from"
-          @input="emit('update:from', ($event.target as HTMLInputElement).value)"
-        />
-      </div>
-
-      <div class="field">
-        <label for="date-to">Hasta</label>
-        <input
-          id="date-to"
-          type="date"
-          :value="to"
-          @input="emit('update:to', ($event.target as HTMLInputElement).value)"
-        />
-      </div>
-
-      <div class="field">
-        <label for="status-filter">Estado</label>
-        <select
-          id="status-filter"
-          :value="status"
-          @change="emit('update:status', ($event.target as HTMLSelectElement).value as PublicationStatusFilter)"
-        >
-          <option v-for="[value, label] in statusOptions" :key="value" :value="value">
-            {{ label }}
-          </option>
-        </select>
-      </div>
-
-      <button class="secondary-button" type="button" :disabled="isLoading" @click="emit('refresh')">
-        <span class="icon" aria-hidden="true">↻</span>
-        Actualizar
-      </button>
+    <div class="dashboard-filters__controls">
+      <DateField
+        id="dashboard-date-from"
+        label="Desde"
+        :model-value="from"
+        :disabled="disabled"
+        :error="fromError"
+        @update:model-value="emit('update:from', $event)"
+      />
+      <DateField
+        id="dashboard-date-to"
+        label="Hasta"
+        :model-value="to"
+        :disabled="disabled"
+        :error="toError"
+        @update:model-value="emit('update:to', $event)"
+      />
+      <Button variant="primary" :disabled="disabled" @click="emit('apply')">
+        Aplicar
+      </Button>
     </div>
-
-    <p class="filter-hint">
-      <span class="filter-hint-dot" aria-hidden="true"></span>
-      Los datos se actualizan al cambiar el rango de fechas.
-    </p>
   </section>
 </template>
+
+<style scoped>
+.dashboard-filters {
+  background: var(--color-background-surface);
+  border: var(--border-width-default) solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.dashboard-filters__heading {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--space-4);
+  justify-content: space-between;
+}
+
+.dashboard-filters__eyebrow {
+  color: var(--color-action-primary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.dashboard-filters__title {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-heading-3);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading-3);
+  margin: var(--space-1) 0 0;
+}
+
+.dashboard-filters__controls {
+  align-items: end;
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  margin-top: var(--space-5);
+}
+
+.dashboard-filters__controls :deep(.ui-button) {
+  min-width: var(--space-16);
+}
+
+@media (max-width: 599px) {
+  .dashboard-filters__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-filters__controls :deep(.ui-button) {
+    width: 100%;
+  }
+}
+</style>
