@@ -30,7 +30,13 @@ sin copiar acciones, contratos ni comandos de producto del backend.
 | validation | Lista de objetos id/type/command/expected; comandos reales o inspecciones. |
 | constraints | Lista de restricciones y protección de secretos. |
 | dependencies | Lista de task_id previos; vacía si no existen. |
+| final_report_schema | Objeto JSON opcional que define el reporte final esperado; el task runner lo conserva y muestra en el brief. |
 | on_success | CONTINUE para siguiente registro; DONE para cerrar tras evidencia. |
+
+Los campos no documentados se rechazan con un error de esquema que incluye el
+archivo y la línea. Esto evita que una errata o una extensión contractual se
+ignore silenciosamente. Los objetos de `validation` aceptan únicamente `id`,
+`type`, `command` y `expected`.
 
 Ejemplo ilustrativo exclusivo de la fábrica (no representa US-D7-T4):
 

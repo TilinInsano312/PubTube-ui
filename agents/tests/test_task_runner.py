@@ -25,6 +25,10 @@ def test_task_runner_renders_all_operational_fields(tmp_path: Path) -> None:
                 ],
                 "constraints": ["No ejecutar shell"],
                 "dependencies": [],
+                "final_report_schema": {
+                    "status": "DONE | PARTIAL | BLOCKED",
+                    "pending": ["pendiente o None"],
+                },
                 "on_success": "DONE",
             }
         )
@@ -43,6 +47,8 @@ def test_task_runner_renders_all_operational_fields(tmp_path: Path) -> None:
         "## Constraints",
         "## Dependencies",
         "## On Success",
+        "## Final Report Schema",
+        '"status": "DONE | PARTIAL | BLOCKED"',
         "Assigned agent:",
         "Skill:",
     ):

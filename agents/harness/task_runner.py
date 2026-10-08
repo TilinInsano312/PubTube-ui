@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -53,6 +54,9 @@ def render_task_brief(contract: TaskContract) -> str:
         _list("Dependencies", contract.dependencies),
         f"## On Success\n\n{contract.on_success}",
     ]
+    if contract.final_report_schema is not None:
+        schema = json.dumps(contract.final_report_schema, ensure_ascii=False, indent=2, sort_keys=True)
+        sections.append(f"## Final Report Schema\n\n```json\n{schema}\n```")
     return "\n\n".join(sections)
 
 

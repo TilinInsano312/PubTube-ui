@@ -91,3 +91,42 @@ def test_invalid_on_success_is_a_schema_error(tmp_path: Path) -> None:
 
     with pytest.raises(ContractSchemaError, match="on_success must be one of"):
         load_contracts(source)
+
+
+def test_unknown_contract_field_is_rejected(tmp_path: Path) -> None:
+    source = write_jsonl(tmp_path / "unknown.jsonl", contract(surprise="ignored before"))
+
+    with pytest.raises(ContractSchemaError, match="unknown fields: surprise"):
+        load_contracts(source)
+
+
+def test_unknown_validation_field_is_rejected(tmp_path: Path) -> None:
+    source = write_jsonl(
+        tmp_path / "unknown-validation.jsonl",
+        contract(
+            validation=[
+                {
+                    "id": "V1",
+                    "type": "command",
+                    "command": "echo never",
+                    "expected": "No se ejecuta",
+                    "surprise": True,
+                }
+            ]
+        ),
+    )
+
+    with pytest.raises(ContractSchemaError, match="validation\\[0\\] has unknown fields: surprise"):
+        load_contracts(source)
+
+
+def test_final_report_schema_is_preserved(tmp_path: Path) -> None:
+    schema = {"status": "DONE | PARTIAL | BLOCKED", "pending": ["item"]}
+    source = write_jsonl(
+        tmp_path / "report.jsonl",
+        contract(final_report_schema=schema),
+    )
+
+    loaded = load_contracts(source)
+
+    assert loaded[0].final_report_schema == schema

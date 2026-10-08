@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 
 @dataclass(frozen=True)
@@ -31,6 +32,7 @@ class TaskContract:
     validation: tuple[ValidationSpec, ...]
     constraints: tuple[str, ...]
     dependencies: tuple[str, ...]
+    final_report_schema: dict[str, Any] | None
     on_success: str
     source: Path
     line: int

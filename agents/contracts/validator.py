@@ -23,6 +23,8 @@ REQUIRED_FIELDS = {
     "dependencies",
     "on_success",
 }
+OPTIONAL_FIELDS = {"final_report_schema"}
+VALIDATION_FIELDS = {"id", "type", "command", "expected"}
 ALLOWED_ON_SUCCESS = {"CONTINUE", "DONE"}
 
 
@@ -78,10 +80,14 @@ def _validation_specs(value: Any, path: Path, line: int) -> tuple[ValidationSpec
         field = f"validation[{index}]"
         if not isinstance(item, dict):
             raise ContractSchemaError(f"{_location(path, line)}: {field} must be an object")
-        missing = {"id", "type", "command", "expected"} - item.keys()
+        missing = VALIDATION_FIELDS - item.keys()
         if missing:
             names = ", ".join(sorted(missing))
             raise ContractSchemaError(f"{_location(path, line)}: {field} missing fields: {names}")
+        unknown = item.keys() - VALIDATION_FIELDS
+        if unknown:
+            names = ", ".join(sorted(unknown))
+            raise ContractSchemaError(f"{_location(path, line)}: {field} has unknown fields: {names}")
         specs.append(
             ValidationSpec(
                 id=_non_empty_string(item["id"], f"{field}.id", path, line),
@@ -100,6 +106,17 @@ def _parse_entry(value: Any, path: Path, line: int) -> TaskContract:
     if missing:
         names = ", ".join(sorted(missing))
         raise ContractSchemaError(f"{_location(path, line)}: missing required fields: {names}")
+    unknown = value.keys() - REQUIRED_FIELDS - OPTIONAL_FIELDS
+    if unknown:
+        names = ", ".join(sorted(unknown))
+        raise ContractSchemaError(f"{_location(path, line)}: unknown fields: {names}")
+    final_report_schema = None
+    if "final_report_schema" in value:
+        if not isinstance(value["final_report_schema"], dict):
+            raise ContractSchemaError(
+                f"{_location(path, line)}: final_report_schema must be a JSON object"
+            )
+        final_report_schema = value["final_report_schema"]
     order = value["order"]
     if isinstance(order, bool) or not isinstance(order, int) or order < 0:
         raise ContractSchemaError(f"{_location(path, line)}: order must be a non-negative integer")
@@ -123,6 +140,7 @@ def _parse_entry(value: Any, path: Path, line: int) -> TaskContract:
         validation=_validation_specs(value["validation"], path, line),
         constraints=_string_list(value["constraints"], "constraints", path, line),
         dependencies=_string_list(value["dependencies"], "dependencies", path, line),
+        final_report_schema=final_report_schema,
         on_success=on_success,
         source=path,
         line=line,
