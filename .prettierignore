@@ -1,0 +1,12 @@
+dist/
+coverage/
+node_modules/
+
+# La calidad frontend no reformatea documentación, fábrica ni observabilidad.
+agents/
+docs/
+observability/
+scripts/
+tasks/
+*.md
+*.jsonl

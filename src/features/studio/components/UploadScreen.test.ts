@@ -7,15 +7,20 @@ type UploadHandler = typeof import('../api/content.api').uploadVideo
 
 describe('carga de video', () => {
   it('muestra la pantalla de duplicado y permite usar el contentId existente ante 409', async () => {
-    const uploadFile = vi.fn<UploadHandler>().mockRejectedValue(new ApiError('Este video ya existe', 409, {
-      statusCode: 409,
-      error: 'DUPLICATE_CONTENT',
-      existingContentId: 'existing-uuid-42',
-    }))
+    const uploadFile = vi.fn<UploadHandler>().mockRejectedValue(
+      new ApiError('Este video ya existe', 409, {
+        statusCode: 409,
+        error: 'DUPLICATE_CONTENT',
+        existingContentId: 'existing-uuid-42',
+      }),
+    )
     const wrapper = mount(UploadScreen, { props: { uploadFile } })
     const input = wrapper.get('input[type="file"]')
     const videoFile = new File(['video'], 'demo.mp4', { type: 'video/mp4' })
-    Object.defineProperty(input.element, 'files', { configurable: true, value: [videoFile] })
+    Object.defineProperty(input.element, 'files', {
+      configurable: true,
+      value: [videoFile],
+    })
     await input.trigger('change')
     await wrapper.get('.progress-actions .button-primary').trigger('click')
     await flushPromises()

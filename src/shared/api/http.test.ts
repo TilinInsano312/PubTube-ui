@@ -19,21 +19,27 @@ describe('errores de la API de contenido', () => {
   })
 
   it('no confunde otros errores 409 con contenido duplicado', () => {
-    expect(duplicateContentId(new ApiError('Conflicto', 409, { error: 'OTHER' }))).toBeNull()
+    expect(
+      duplicateContentId(new ApiError('Conflicto', 409, { error: 'OTHER' })),
+    ).toBeNull()
   })
 
   it('conserva el código y el contentId enviados por NestJS en el body 409', async () => {
     vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000')
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
-      ok: false,
-      status: 409,
-      text: async () => JSON.stringify({
-        statusCode: 409,
-        error: 'DUPLICATE_CONTENT',
-        message: 'Este video ya existe en el catálogo',
-        existingContentId: 'backend-content-77',
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 409,
+        text: async () =>
+          JSON.stringify({
+            statusCode: 409,
+            error: 'DUPLICATE_CONTENT',
+            message: 'Este video ya existe en el catálogo',
+            existingContentId: 'backend-content-77',
+          }),
       }),
-    }))
+    )
 
     let caught: unknown
     try {
