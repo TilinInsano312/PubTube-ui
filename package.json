@@ -8,8 +8,8 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write package.json eslint.config.js prettier.config.js vitest.config.ts \"src/**/*.{spec,test}.ts\"",
-    "format:check": "prettier --check package.json eslint.config.js prettier.config.js vitest.config.ts \"src/**/*.{spec,test}.ts\"",
+    "format": "prettier --write package.json eslint.config.js prettier.config.js vite.config.ts vitest.config.ts \"tsconfig*.json\" \"src/**/*.{vue,ts,css}\"",
+    "format:check": "prettier --check package.json eslint.config.js prettier.config.js vite.config.ts vitest.config.ts \"tsconfig*.json\" \"src/**/*.{vue,ts,css}\"",
     "test": "vitest run",
     "test:watch": "vitest"
   },

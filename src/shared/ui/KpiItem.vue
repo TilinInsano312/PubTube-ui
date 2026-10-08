@@ -15,7 +15,12 @@ withDefaults(
 </script>
 
 <template>
-  <div class="ui-kpi-item" :class="`ui-kpi-item--${status}`" role="group" :aria-label="label">
+  <div
+    class="ui-kpi-item"
+    :class="`ui-kpi-item--${status}`"
+    role="group"
+    :aria-label="label"
+  >
     <span class="ui-kpi-item__icon" aria-hidden="true">
       <component :is="icon" class="ui-kpi-item__icon-svg" :stroke-width="2" />
     </span>

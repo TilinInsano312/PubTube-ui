@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Activity, CalendarClock, LayoutDashboard, Library, Settings, X } from '@lucide/vue'
+import {
+  Activity,
+  CalendarClock,
+  LayoutDashboard,
+  Library,
+  Settings,
+  X,
+} from '@lucide/vue'
 import { Avatar, IconButton, NavigationRailItem } from '../shared/ui'
 import type { NavigationItemDefinition } from './types'
 
@@ -100,7 +107,8 @@ function selectItem(item: NavigationItemDefinition): void {
   left: 0;
   position: fixed;
   top: 0;
-  transition: transform var(--motion-duration-standard) var(--motion-easing-standard);
+  transition: transform var(--motion-duration-standard)
+    var(--motion-easing-standard);
   visibility: visible;
   width: var(--layout-navigation-rail-width);
   z-index: var(--z-navigation);

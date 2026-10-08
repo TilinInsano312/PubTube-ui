@@ -54,7 +54,8 @@ withDefaults(
   padding: 0 var(--space-3);
   text-align: left;
   transition:
-    background-color var(--motion-duration-standard) var(--motion-easing-standard),
+    background-color var(--motion-duration-standard)
+      var(--motion-easing-standard),
     color var(--motion-duration-standard) var(--motion-easing-standard);
   width: 100%;
 }

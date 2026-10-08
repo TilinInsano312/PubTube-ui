@@ -1,9 +1,13 @@
 import { computed, readonly, ref } from 'vue'
 import { getDashboardCounts, DashboardApiError } from '../../api/dashboard.api'
 import type { DashboardDateQuery } from '../../api/dashboard.api'
-import type { DashboardCounts, DashboardErrorCode } from '../../api/dashboard.types'
+import type {
+  DashboardCounts,
+  DashboardErrorCode,
+} from '../../api/dashboard.types'
 
-export type DashboardLoadState = 'idle' | 'loading' | 'success' | 'empty' | 'error'
+export type DashboardLoadState =
+  'idle' | 'loading' | 'success' | 'empty' | 'error'
 
 export interface DashboardErrorState {
   code: DashboardErrorCode
@@ -53,9 +57,10 @@ export function useDashboardCounts() {
       }
 
       counts.value = { ...EMPTY_COUNTS }
-      error.value = cause instanceof DashboardApiError
-        ? { code: cause.code, status: cause.status }
-        : { code: 'NETWORK_ERROR' }
+      error.value =
+        cause instanceof DashboardApiError
+          ? { code: cause.code, status: cause.status }
+          : { code: 'NETWORK_ERROR' }
       state.value = 'error'
     }
   }

@@ -19,7 +19,10 @@ const DASHBOARD_ERROR_CODES: Record<DashboardHttpStatus, DashboardErrorCode> = {
   504: 'DASHBOARD_TIMEOUT',
 }
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '/api').replace(/\/+$/, '')
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '/api').replace(
+  /\/+$/,
+  '',
+)
 
 export class DashboardApiError extends Error {
   readonly code: DashboardErrorCode
@@ -37,7 +40,9 @@ function isDashboardHttpStatus(status: number): status is DashboardHttpStatus {
   return status in DASHBOARD_ERROR_CODES
 }
 
-function isDashboardCountsResponse(value: unknown): value is DashboardCountsResponse {
+function isDashboardCountsResponse(
+  value: unknown,
+): value is DashboardCountsResponse {
   if (typeof value !== 'object' || value === null) {
     return false
   }

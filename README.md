@@ -32,9 +32,12 @@ npm install
 npm run dev
 ```
 
-Para validar el build de producción:
+Para ejecutar las validaciones frontend vigentes:
 
 ```sh
+npm run lint
+npm run format:check
+npm run test
 npm run build
 ```
 

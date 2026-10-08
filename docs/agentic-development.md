@@ -149,8 +149,9 @@ aislada, no dependencia del producto. Si no está disponible, informar
 NOT VERIFIED; no ocultar el fallo.
 
 Cuando exista package.json, inspeccionar scripts, lockfile y gestor antes de
-lint, test, type-check o build. En este repositorio se usa npm y la validación
-frontend disponible es `npm run build`; no inventar scripts que no existan.
+lint, formato, test, type-check o build. En este repositorio se usa npm y las
+validaciones frontend vigentes son `npm run lint`, `npm run format:check`,
+`npm run test` y `npm run build`; no inventar scripts que no existan.
 Proteger secretos: VITE_* es público, endpoints configurados mediante mecanismos
 existentes y contratos API conservados. Grafana usa datasources/dashboards/
 provisioning versionados cuando estén autorizados; Prometheus sigue en backend,

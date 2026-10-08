@@ -19,10 +19,14 @@ const filters = reactive<DashboardDateFilters>({ ...defaultFilters })
 const dashboard = useDashboardCounts()
 const counts = dashboard.counts
 
-const errorCopy: Record<DashboardErrorCode, { title: string; description: string }> = {
+const errorCopy: Record<
+  DashboardErrorCode,
+  { title: string; description: string }
+> = {
   UNAUTHORIZED: {
     title: 'Dashboard no autorizado',
-    description: 'No tienes autorización para consultar los conteos de publicaciones.',
+    description:
+      'No tienes autorización para consultar los conteos de publicaciones.',
   },
   INVALID_DATE_RANGE: {
     title: 'Revisa el rango de fechas seleccionado.',
@@ -38,7 +42,8 @@ const errorCopy: Record<DashboardErrorCode, { title: string; description: string
   },
   DASHBOARD_UNAVAILABLE: {
     title: 'Dashboard no disponible',
-    description: 'Los datos de publicaciones no están disponibles en este momento.',
+    description:
+      'Los datos de publicaciones no están disponibles en este momento.',
   },
   DASHBOARD_TIMEOUT: {
     title: 'No pudimos cargar el dashboard.',
@@ -144,11 +149,18 @@ onMounted(() => {
 
       <KpiSummary :counts="counts" :loading="isBusy" />
 
-      <section v-if="isError" class="dashboard-error" role="alert" aria-labelledby="dashboard-error-title">
+      <section
+        v-if="isError"
+        class="dashboard-error"
+        role="alert"
+        aria-labelledby="dashboard-error-title"
+      >
         <h2 id="dashboard-error-title" class="dashboard-error__title">
           {{ currentErrorCopy.title }}
         </h2>
-        <p class="dashboard-error__description">{{ currentErrorCopy.description }}</p>
+        <p class="dashboard-error__description">
+          {{ currentErrorCopy.description }}
+        </p>
         <Button variant="secondary" :disabled="isBusy" @click="loadDashboard">
           Intentar nuevamente
         </Button>
