@@ -6,20 +6,25 @@ Este documento define los límites y las decisiones de arquitectura para la UI
 funcional del Módulo 4. Debe leerse junto con `AGENTS.md`, el README y la tarea
 que se esté ejecutando.
 
-El frontend Vue ya está inicializado como un scaffold funcional de Vite y cuenta
-con una base de sistema visual, el shell de US-D5 y el primer cliente HTTP de
-counts. El repositorio aún no contiene routing ni estado global. Por eso este
-documento separa explícitamente lo que existe de lo que queda planificado:
+El frontend Vue ya está inicializado y cuenta con una base de sistema visual,
+el dashboard de US-D5 y un workspace de Studio para el flujo de contenidos del
+Módulo 1. `App.vue` monta actualmente `StudioWorkspace`; desde su navegación se
+puede abrir `DashboardView`. El repositorio aún no contiene routing ni estado
+global. Por eso este documento separa explícitamente lo que existe de lo que
+queda planificado:
 
 - **Implementado:** Vue 3, Vite, TypeScript, Composition API, `<script setup>`,
-  tokens de diseño base, estilos globales base, los patrones `AppShell`,
-  `NavigationRail` y `Topbar` en `src/layouts/`, el cliente tipado de counts de
-  dashboard en `src/api/`, y scripts npm `dev`, `build` y `preview`.
+  tokens y estilos globales base, componentes compartidos, los patrones
+  `AppShell`, `NavigationRail` y `Topbar` en `src/layouts/`, clientes HTTP
+  tipados para dashboard y contenidos, y pruebas unitarias con Vitest.
+- **Mock/demostración:** `src/features/dashboard/` presenta conteos reales si el
+  endpoint está disponible, pero su tabla de detalle permanece vacía porque ese
+  contrato no existe. `src/features/studio/` combina integraciones HTTP de
+  contenidos con fixtures explícitos para demostrar la biblioteca.
 - **Implementado fuera de Vue:** provisioning de Grafana y su compose de
   observabilidad; Grafana es la UI técnica y consume Prometheus del backend.
-- **Planificado:** features de producto adicionales, cliente API para contratos
-  aún no confirmados, Vue Router, Pinia, estilos/componentes de UI adicionales
-  y pruebas frontend.
+- **Planificado:** features de producto adicionales, clientes API para contratos
+  aún no confirmados, Vue Router, Pinia y cobertura frontend adicional.
 - **No disponible en este repositorio:** el backend, sus endpoints efectivos,
   RabbitMQ, PostgreSQL y los contratos funcionales completos. No deben
   inventarse para avanzar una pantalla.
@@ -37,13 +42,16 @@ documento separa explícitamente lo que existe de lo que queda planificado:
 | Sistema visual base | `src/styles/tokens.css` y `src/styles/global.css` | Implementado |
 | Iconografía | Lucide para Vue mediante `@lucide/vue` | Instalada en `package.json` |
 | Gestor | npm | Confirmado por `package-lock.json` |
-| Validación actual | `vue-tsc -b` + `vite build` | Script `npm run build` |
+| Pruebas actuales | Vitest + Vue Test Utils + jsdom | Scripts `npm run test` y `npm run test:watch` |
+| Calidad estática | ESLint + Prettier | Scripts `npm run lint`, `npm run format` y `npm run format:check` |
+| Validación de build | `vue-tsc -b` + `vite build` | Script `npm run build` |
 
 ### Dependencias que todavía no forman parte del proyecto
 
-Vue Router, Pinia, Tailwind CSS, Axios, Vitest, Playwright, ESLint y Prettier
-no están instalados actualmente. La iconografía de la UI usa Lucide mediante
-`@lucide/vue`; la versión efectiva se define en `package.json`. Las demás
+Vue Router, Pinia, Tailwind CSS, Axios y Playwright no están instalados
+actualmente. Vitest, Vue Test Utils, jsdom, ESLint y Prettier sí forman parte del
+toolchain de calidad. La iconografía de la UI usa Lucide mediante
+`@lucide/vue`; las versiones efectivas se definen en `package.json`. Las demás
 dependencias solo deben incorporarse cuando una tarea concreta las necesite,
 con justificación y actualización del lockfile. La arquitectura no autoriza
 asumir que esas herramientas ya existen.
@@ -65,10 +73,10 @@ La UI funcional vive en `src/`. La automatización de agentes, la documentación
 y Grafana tienen responsabilidades distintas y no deben mezclarse con
 componentes de producto.
 
-El scaffold actual contiene `App.vue`, `main.ts`, estilos, assets y el
-componente de ejemplo de Vite. Al iniciar la primera feature real, ese ejemplo
-debe reemplazarse de forma acotada por componentes del producto; no se deben
-crear capas vacías solo para completar una estructura ideal.
+La aplicación actual contiene `App.vue`, `main.ts`, estilos y features de
+producto. Los assets y componentes de ejemplo de Vite no forman parte de la
+implementación vigente. No se deben crear capas vacías solo para completar una
+estructura ideal.
 
 ## Estructura objetivo de `src/`
 
@@ -113,8 +121,10 @@ polling ni transporte en tiempo real.
 ### `features/`
 
 Cada feature puede contener sus vistas, componentes, composables y tipos
-específicos. No se crearán capas `domain`, `repositories` o `use-cases` salvo
-que una necesidad demostrable justifique esa complejidad.
+específicos. Actualmente `dashboard/` contiene la vista de conteos de US-D5 y
+`studio/` el workspace de contenidos del Módulo 1. No se crearán capas
+`domain`, `repositories` o `use-cases` salvo que una necesidad demostrable
+justifique esa complejidad.
 
 ### `shared/`
 
@@ -147,8 +157,8 @@ Cliente HTTP compartido
 Backend del sistema
 ```
 
-El flujo de counts de dashboard implementa este recorrido. Las decisiones de
-autenticación, errores, polling o actualización en tiempo real deben basarse
+Los flujos de dashboard y contenidos implementan este recorrido. Las decisiones
+de autenticación, errores, polling o actualización en tiempo real deben basarse
 en el contrato del backend correspondiente; para US-D5 no se agregan polling,
 WebSocket, SSE ni retry automático.
 
@@ -182,13 +192,16 @@ Los comandos deben salir de los scripts reales de `package.json`:
 
 ```sh
 npm install
+npm run lint
+npm run format:check
+npm run test
 npm run build
 ```
 
-`npm run build` ejecuta el type-check de `vue-tsc` y el build de Vite. No hay
-scripts frontend de lint o tests configurados todavía; no se deben declarar
-como evidencia hasta que una tarea los agregue. La fábrica Python se valida de
-forma independiente con:
+`npm run lint` ejecuta ESLint, `npm run format:check` verifica la configuración
+y los tests frontend cubiertos por Prettier, `npm run test` ejecuta Vitest y
+`npm run build` ejecuta el type-check de `vue-tsc` y el build de Vite. La
+fábrica Python se valida de forma independiente con:
 
 ```sh
 python -m compileall -q agents

@@ -22,6 +22,21 @@ no llama modelos, no ejecuta shell automáticamente y no hace merges.
 
 ## Preparar y ejecutar una tarea
 
+### Entrada humana cotidiana
+
+Un integrante puede usar la [plantilla breve](../agents/templates/simple-task-template.md)
+sin conocer `AgentRun`, perfiles, skills ni JSONL. Debe indicar la tarea, el
+resultado esperado y criterios de aceptación, y pedir a Codex que siga la
+fábrica del repositorio. Codex lee `AGENTS.md`, inspecciona el estado real y
+convierte esa entrada en un contrato operativo con scope y validaciones antes
+de implementar.
+
+JSONL es la capa avanzada para planes versionados, ordenados y con dependencias.
+El parser, el runner y el harness preparan o validan datos; no llaman a Codex,
+no ejecutan comandos declarados por una tarea y no hacen merge.
+
+### Flujo avanzado
+
 1. Verificar rama, base y cambios previos. Leer AGENTS, README y docs relevantes.
    Para tareas que afecten interfaz, estilos, tokens, layout visual o
    presentación, `docs/design-system.md` es documentación aplicable y debe
@@ -88,8 +103,17 @@ Cada línea contiene una tarea completa con task_id, story, order, title,
 objective, scope, actions, acceptance_criteria, validation, constraints,
 dependencies y on_success. Preparar registros según estado real y comprobar
 dependencias; trasladar objetivo/AC/scope al CLI y el resto al prompt de Codex.
-El harness no ejecuta JSONL ni acciones automáticamente. US-D7-T4 se contratará
-por separado; el ejemplo documentado solo comprueba generación de un brief.
+El harness no ejecuta JSONL ni acciones automáticamente. Las herramientas
+avanzadas disponibles son:
+
+```sh
+python -m agents doctor
+python -m agents.contracts tasks/
+python -m agents.harness.task_runner tasks/us-d7-t4-grafana.jsonl --task-id US-D7-T4-00
+```
+
+US-D7-T4 se contrata por separado; el ejemplo documentado solo comprueba la
+generación de un brief.
 
 ## Git y validación
 

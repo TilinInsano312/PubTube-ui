@@ -33,6 +33,19 @@ de `DONE`. Un criterio obligatorio sin verificar impide `DONE`.
 `CONTINUE` se reporta como `PARTIAL`; `BLOCKED` requiere una dependencia externa
 o información necesaria que impida avanzar. No confundir dificultad con bloqueo.
 
+### Tareas humanas sin JSONL
+
+Una solicitud válida con `Tarea`, `Resultado esperado` y `Criterios de
+aceptación` es suficiente para el uso cotidiano. Antes de implementar, Codex
+debe convertirla en un contrato operativo que explicite scope, acciones,
+validaciones, restricciones y dependencias a partir de la solicitud y del estado
+real del repositorio. Debe respetar ese scope, ejecutar evidencia aplicable y
+cerrar como `DONE`, `PARTIAL` o `BLOCKED`.
+
+JSONL sigue siendo la interfaz avanzada y versionable para planes con varias
+tareas, dependencias o automatización. Ninguno de los comandos Python invoca a
+Codex, ejecuta comandos arbitrarios del contrato ni autoriza un merge.
+
 ## Git
 
 Ejecutar `git status --short`, `git branch --show-current` y
