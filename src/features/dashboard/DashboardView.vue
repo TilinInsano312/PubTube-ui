@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import DashboardFilters from './components/DashboardFilters.vue'
 import PublicationList from './components/PublicationList.vue'
 import StatusSummary from './components/StatusSummary.vue'
@@ -74,14 +74,8 @@ function resetFilters(): void {
   filters.from = defaultFilters.from
   filters.to = defaultFilters.to
   activeStatus.value = 'all'
+  void loadDashboard()
 }
-
-watch(
-  () => [filters.from, filters.to],
-  () => {
-    void loadDashboard()
-  },
-)
 
 onMounted(() => {
   void loadDashboard()
@@ -127,13 +121,11 @@ onMounted(() => {
       <DashboardFilters
         :from="filters.from"
         :to="filters.to"
-        :status="activeStatus"
-        :is-loading="isLoading"
+        :disabled="isLoading"
         @update:from="filters.from = $event"
         @update:to="filters.to = $event"
-        @update:status="activeStatus = $event"
         @reset="resetFilters"
-        @refresh="loadDashboard"
+        @apply="loadDashboard"
       />
 
       <section v-if="isLoading" class="state-card" role="status" aria-live="polite">
