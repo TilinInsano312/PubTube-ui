@@ -3,7 +3,27 @@ Frontend PubTube Modulo 4 Para la asignatura de direccion de proyecto
 
 PubTube-ui es el repositorio de la UI del Módulo 4. El frontend funcional está
 inicializado con **Vue 3 + Vite + TypeScript**.
-Grafana será la UI técnica de observabilidad, con Prometheus en infraestructura/backend.
+Grafana es la UI técnica de observabilidad, con Prometheus en infraestructura/backend.
+
+## Desarrollar una tarea con Codex
+
+No hace falta escribir JSONL para el trabajo cotidiano. Copia la
+[plantilla breve](agents/templates/simple-task-template.md), completa sus tres
+campos y envíala a Codex junto con esta instrucción:
+
+> Ejecuta esta tarea siguiendo la fábrica agéntica del repositorio. Lee
+> `AGENTS.md` antes de editar.
+
+```text
+Tarea: ...
+Resultado esperado: ...
+Criterios de aceptación:
+- ...
+```
+
+Codex convierte esa solicitud en un contrato operativo, confirma el alcance,
+implementa, valida y reporta `DONE`, `PARTIAL` o `BLOCKED`. Los contratos JSONL
+quedan como formato avanzado para trabajo versionado con dependencias.
 
 ## Desarrollo del frontend
 
@@ -12,9 +32,12 @@ npm install
 npm run dev
 ```
 
-Para validar el build de producción:
+Para ejecutar las validaciones frontend vigentes:
 
 ```sh
+npm run lint
+npm run format:check
+npm run test
 npm run build
 ```
 
@@ -32,15 +55,21 @@ Requisitos: Python 3.10 o posterior; pytest solo para ejecutar tests.
 El código de la fábrica usa la biblioteca estándar, sin dependencias frontend.
 
 ```sh
+python -m agents doctor
+python -m agents.contracts tasks/
+python -m agents.harness.task_runner tasks/us-d7-t4-grafana.jsonl --task-id US-D7-T4-00
 python -m agents.harness.run_agent_loop "Preparar tarea UI" --ac "Alcance y evidencia definidos" --scope "agents/"
 python -m compileall -q agents
 python -m pytest -q agents/tests
 ```
 
+Estos comandos validan y preparan briefs; no invocan a Codex, no ejecutan los
+comandos declarados en los contratos y no hacen merge.
+
 Flujo Git: `main -> develop -> feature/*`. Preparar contrato, implementar,
 validar, revisar diff y abrir PR hacia `develop`. El merge se autoriza por separado.
-El frontend funcional base está inicializado; las features de producto se
-agregarán según contratos y tareas autorizadas.
+El frontend funcional está inicializado; sus features de producto evolucionan
+únicamente según contratos y tareas autorizadas.
 
 ## Observabilidad técnica (US-D7-T4)
 

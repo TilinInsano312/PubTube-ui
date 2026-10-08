@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, useId } from 'vue'
 import { StatusBadge, StatusTab } from '../../../shared/ui'
-import type { PublicationListItem, PublicationStatus, PublicationStatusFilter } from '../dashboard.types'
+import type {
+  PublicationListItem,
+  PublicationStatus,
+  PublicationStatusFilter,
+} from '../dashboard.types'
 
 const props = withDefaults(
   defineProps<{
@@ -95,7 +99,11 @@ function emptyDescription(): string {
       </div>
     </div>
 
-    <div class="publication-table__tabs" role="tablist" aria-label="Filtrar publicaciones por estado">
+    <div
+      class="publication-table__tabs"
+      role="tablist"
+      aria-label="Filtrar publicaciones por estado"
+    >
       <StatusTab
         v-for="tab in tabs"
         :key="tab.status"
@@ -107,16 +115,34 @@ function emptyDescription(): string {
       />
     </div>
 
-    <div v-if="props.loading" class="publication-table__loading" role="status" aria-live="polite">
-      <span class="publication-table__loading-label">Cargando publicaciones</span>
-      <span v-for="row in 3" :key="row" class="publication-table__skeleton-row" aria-hidden="true">
-        <span class="publication-table__skeleton-cell publication-table__skeleton-cell--wide"></span>
+    <div
+      v-if="props.loading"
+      class="publication-table__loading"
+      role="status"
+      aria-live="polite"
+    >
+      <span class="publication-table__loading-label"
+        >Cargando publicaciones</span
+      >
+      <span
+        v-for="row in 3"
+        :key="row"
+        class="publication-table__skeleton-row"
+        aria-hidden="true"
+      >
+        <span
+          class="publication-table__skeleton-cell publication-table__skeleton-cell--wide"
+        ></span>
         <span class="publication-table__skeleton-cell"></span>
         <span class="publication-table__skeleton-cell"></span>
       </span>
     </div>
 
-    <div v-else-if="visibleItems.length === 0" class="publication-table__empty" role="status">
+    <div
+      v-else-if="visibleItems.length === 0"
+      class="publication-table__empty"
+      role="status"
+    >
       <h3>{{ emptyTitle() }}</h3>
       <p>{{ emptyDescription() }}</p>
     </div>
@@ -136,7 +162,9 @@ function emptyDescription(): string {
         <tbody>
           <tr v-for="item in visibleItems" :key="item.id">
             <th scope="row">
-              <span class="publication-table__content-label">{{ item.contentLabel }}</span>
+              <span class="publication-table__content-label">{{
+                item.contentLabel
+              }}</span>
               <span v-if="item.contentId" class="publication-table__content-id">
                 {{ item.contentId }}
               </span>

@@ -25,6 +25,9 @@ diff afectado.
 ## Ciclo y cierre
 
 Aplicar `ANALYZE -> PLAN -> IMPLEMENT -> VERIFY -> REVIEW -> DECIDE`.
+Antes de comenzar cada tarea, capturar `git rev-parse HEAD` y usar ese commit
+como baseline exclusivo para validar su scope. En tareas secuenciales se captura
+un baseline nuevo por tarea; no se reutiliza `develop` como baseline operativo.
 Usar cambios mínimos, sin refactors ni dependencias fuera de alcance.
 Cada criterio de aceptación requiere evidencia concreta: comando o inspección,
 resultado `PASS`, `FAIL` o `NOT VERIFIED`, y archivo/cambio asociado.
@@ -32,6 +35,19 @@ Revisar el diff completo, imports, regresiones, duplicación y secretos antes
 de `DONE`. Un criterio obligatorio sin verificar impide `DONE`.
 `CONTINUE` se reporta como `PARTIAL`; `BLOCKED` requiere una dependencia externa
 o información necesaria que impida avanzar. No confundir dificultad con bloqueo.
+
+### Tareas humanas sin JSONL
+
+Una solicitud válida con `Tarea`, `Resultado esperado` y `Criterios de
+aceptación` es suficiente para el uso cotidiano. Antes de implementar, Codex
+debe convertirla en un contrato operativo que explicite scope, acciones,
+validaciones, restricciones y dependencias a partir de la solicitud y del estado
+real del repositorio. Debe respetar ese scope, ejecutar evidencia aplicable y
+cerrar como `DONE`, `PARTIAL` o `BLOCKED`.
+
+JSONL sigue siendo la interfaz avanzada y versionable para planes con varias
+tareas, dependencias o automatización. Ninguno de los comandos Python invoca a
+Codex, ejecuta comandos arbitrarios del contrato ni autoriza un merge.
 
 ## Git
 

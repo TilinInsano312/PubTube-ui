@@ -29,7 +29,9 @@ const emit = defineEmits<{
     @click="emit('select')"
   >
     <span>{{ label }}</span>
-    <span v-if="count !== undefined" class="ui-status-tab__count">{{ count }}</span>
+    <span v-if="count !== undefined" class="ui-status-tab__count">{{
+      count
+    }}</span>
   </button>
 </template>
 

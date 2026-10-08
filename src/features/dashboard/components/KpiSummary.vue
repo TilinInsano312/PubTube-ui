@@ -15,7 +15,12 @@ withDefaults(
 
 const cards = [
   { key: 'scheduled', label: 'Programadas', status: 'info', icon: Clock3 },
-  { key: 'published', label: 'Publicadas', status: 'success', icon: CheckCircle2 },
+  {
+    key: 'published',
+    label: 'Publicadas',
+    status: 'success',
+    icon: CheckCircle2,
+  },
   { key: 'failed', label: 'Fallidas', status: 'danger', icon: CircleX },
 ] as const
 </script>
@@ -23,7 +28,9 @@ const cards = [
 <template>
   <section
     class="kpi-summary"
-    :aria-label="loading ? 'Cargando resumen de publicaciones' : 'Resumen de publicaciones'"
+    :aria-label="
+      loading ? 'Cargando resumen de publicaciones' : 'Resumen de publicaciones'
+    "
     :aria-busy="loading"
     :aria-live="loading ? 'polite' : undefined"
     :role="loading ? 'status' : undefined"

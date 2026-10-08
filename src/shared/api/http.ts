@@ -10,11 +10,7 @@ export class ApiError extends Error {
   readonly status: number
   readonly body: ApiErrorBody
 
-  constructor(
-    message: string,
-    status: number,
-    body: ApiErrorBody,
-  ) {
+  constructor(message: string, status: number, body: ApiErrorBody) {
     super(message)
     this.name = 'ApiError'
     this.status = status
@@ -27,19 +23,27 @@ export class ApiError extends Error {
 }
 
 function correlationId(): string {
-  return globalThis.crypto?.randomUUID?.() ?? `ui-${Date.now()}-${Math.random().toString(16).slice(2)}`
+  return (
+    globalThis.crypto?.randomUUID?.() ??
+    `ui-${Date.now()}-${Math.random().toString(16).slice(2)}`
+  )
 }
 
 function backendUrl(path: string): string {
   const baseUrl = import.meta.env.VITE_API_BASE_URL?.trim().replace(/\/+$/, '')
   if (!baseUrl) {
-    throw new Error('Configura VITE_API_BASE_URL para conectar con la API de PubTube.')
+    throw new Error(
+      'Configura VITE_API_BASE_URL para conectar con la API de PubTube.',
+    )
   }
 
   return `${baseUrl}${path}`
 }
 
-export async function apiRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
+export async function apiRequest<T>(
+  path: string,
+  init: RequestInit = {},
+): Promise<T> {
   const headers = new Headers(init.headers)
   headers.set('x-correlation-id', correlationId())
   if (init.body && !headers.has('content-type')) {
@@ -59,7 +63,9 @@ export async function apiRequest<T>(path: string, init: RequestInit = {}): Promi
   }
 
   if (!response.ok) {
-    const errorBody = (body && typeof body === 'object' ? body : {}) as ApiErrorBody
+    const errorBody = (
+      body && typeof body === 'object' ? body : {}
+    ) as ApiErrorBody
     const message = Array.isArray(errorBody.message)
       ? errorBody.message.join(' ')
       : errorBody.message || `La API respondió con estado ${response.status}.`

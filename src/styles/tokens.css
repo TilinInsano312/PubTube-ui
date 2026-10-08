@@ -1,40 +1,40 @@
 :root {
   /* Color primitives: approved light design system */
-  --color-primary-50: #F5F0FF;
-  --color-primary-100: #EBE0FF;
-  --color-primary-200: #D8C4FF;
-  --color-primary-300: #BE9CFF;
-  --color-primary-400: #A173FA;
-  --color-primary-500: #8650F0;
-  --color-primary-600: #6D35D9;
-  --color-primary-700: #5827B5;
-  --color-primary-800: #451F8F;
+  --color-primary-50: #f5f0ff;
+  --color-primary-100: #ebe0ff;
+  --color-primary-200: #d8c4ff;
+  --color-primary-300: #be9cff;
+  --color-primary-400: #a173fa;
+  --color-primary-500: #8650f0;
+  --color-primary-600: #6d35d9;
+  --color-primary-700: #5827b5;
+  --color-primary-800: #451f8f;
   --color-primary-900: #301568;
 
-  --color-ink: #1E1B2E;
-  --color-muted: #6B6880;
-  --color-border-strong: #8B87A0;
-  --color-border: #E7E4F0;
-  --color-canvas: #F7F5FB;
-  --color-surface: #FFFFFF;
-  --color-surface-sunken: #EFEBF8;
+  --color-ink: #1e1b2e;
+  --color-muted: #6b6880;
+  --color-border-strong: #8b87a0;
+  --color-border: #e7e4f0;
+  --color-canvas: #f7f5fb;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #efebf8;
 
   /* Semantic status primitives: blue is reserved for information. */
-  --color-info: #1675C1;
-  --color-info-soft: #E9F4FC;
-  --color-info-text: #115E96;
+  --color-info: #1675c1;
+  --color-info-soft: #e9f4fc;
+  --color-info-text: #115e96;
 
-  --color-success: #167B69;
-  --color-success-soft: #E7F6F1;
-  --color-success-text: #126B5B;
+  --color-success: #167b69;
+  --color-success-soft: #e7f6f1;
+  --color-success-text: #126b5b;
 
-  --color-warning: #A86212;
-  --color-warning-soft: #FFF4DF;
-  --color-warning-text: #8F5410;
+  --color-warning: #a86212;
+  --color-warning-soft: #fff4df;
+  --color-warning-text: #8f5410;
 
-  --color-danger: #B34242;
-  --color-danger-soft: #FFF0EF;
-  --color-danger-text: #A33A3A;
+  --color-danger: #b34242;
+  --color-danger-soft: #fff0ef;
+  --color-danger-text: #a33a3a;
 
   /* Semantic text */
   --color-text-primary: var(--color-ink);
@@ -122,10 +122,12 @@
   --color-status-info-border: var(--color-status-info-solid);
 
   /* Typography */
-  --font-family-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  --font-family-sans:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  --font-family-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;

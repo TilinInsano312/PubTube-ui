@@ -1,5 +1,11 @@
 # Contratos de tareas Codex
 
+JSONL es la interfaz avanzada para planes versionados, dependencias y
+automatización. Para una tarea cotidiana no es obligatorio: se puede entregar a
+Codex la [plantilla humana breve](../agents/templates/simple-task-template.md)
+con `Tarea`, `Resultado esperado` y `Criterios de aceptación`. Codex prepara el
+contrato operativo antes de implementar según `AGENTS.md`.
+
 Este directorio queda versionado mediante esta documentación. Una tarea puede
 representarse en un archivo UTF-8 `.jsonl`: un objeto JSON por línea, sin array
 envolvente, comentarios ni saltos de línea dentro de cada objeto.
@@ -24,7 +30,13 @@ sin copiar acciones, contratos ni comandos de producto del backend.
 | validation | Lista de objetos id/type/command/expected; comandos reales o inspecciones. |
 | constraints | Lista de restricciones y protección de secretos. |
 | dependencies | Lista de task_id previos; vacía si no existen. |
+| final_report_schema | Objeto JSON opcional que define el reporte final esperado; el task runner lo conserva y muestra en el brief. |
 | on_success | CONTINUE para siguiente registro; DONE para cerrar tras evidencia. |
+
+Los campos no documentados se rechazan con un error de esquema que incluye el
+archivo y la línea. Esto evita que una errata o una extensión contractual se
+ignore silenciosamente. Los objetos de `validation` aceptan únicamente `id`,
+`type`, `command` y `expected`.
 
 Ejemplo ilustrativo exclusivo de la fábrica (no representa US-D7-T4):
 
@@ -33,8 +45,15 @@ Ejemplo ilustrativo exclusivo de la fábrica (no representa US-D7-T4):
 ```
 
 El orquestador humano valida unicidad, dependencias existentes/sin ciclos y
-orden antes de enviar registros a Codex. No ejecutar comandos de un archivo
-no confiable automáticamente. `on_success` no autoriza merge ni publicación.
-El harness actual recibe objetivo, AC y scope por argumentos; no interpreta
-JSONL ni programa dependencias. Trasladar esos campos al CLI y las acciones,
-restricciones y dependencias al prompt del ejecutor.
+orden antes de enviar registros a Codex. El validador reproducible realiza esa
+comprobación para un archivo o para todos los `.jsonl` de un directorio:
+
+```sh
+python -m agents.contracts tasks/
+python -m agents.contracts tasks/us-d7-t4-grafana.jsonl
+```
+
+El comando valida JSON, esquema, IDs y el grafo de dependencias. Trata los
+campos `command` e `inspection` únicamente como datos: nunca los ejecuta.
+`on_success` no autoriza merge ni publicación. El harness de briefs se invoca
+por separado y tampoco programa dependencias ni ejecuta comandos arbitrarios.

@@ -30,9 +30,16 @@ const emit = defineEmits<{
       :disabled="disabled"
       :aria-invalid="Boolean(error)"
       :aria-describedby="error ? `${id}-error` : undefined"
-      @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+      @input="
+        emit('update:modelValue', ($event.target as HTMLInputElement).value)
+      "
     />
-    <p v-if="error" :id="`${id}-error`" class="ui-date-field__error" role="alert">
+    <p
+      v-if="error"
+      :id="`${id}-error`"
+      class="ui-date-field__error"
+      role="alert"
+    >
       {{ error }}
     </p>
   </div>

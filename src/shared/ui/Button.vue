@@ -43,7 +43,8 @@ withDefaults(
   min-height: var(--control-height-standard);
   padding: 0 var(--space-4);
   transition:
-    background-color var(--motion-duration-standard) var(--motion-easing-standard),
+    background-color var(--motion-duration-standard)
+      var(--motion-easing-standard),
     border-color var(--motion-duration-standard) var(--motion-easing-standard),
     color var(--motion-duration-standard) var(--motion-easing-standard);
 }
