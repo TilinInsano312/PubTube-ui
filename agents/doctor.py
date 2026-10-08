@@ -21,6 +21,7 @@ REQUIRED_DOCS = (
     "docs/agentic-development.md",
     "docs/design-system.md",
 )
+REQUIRED_CI_WORKFLOW = ".github/workflows/ci.yml"
 
 
 @dataclass(frozen=True)
@@ -67,6 +68,15 @@ def structural_checks(root: Path) -> list[DoctorCheck]:
             DoctorCheck("npm lockfile", lock_path.is_file(), "package-lock.json present" if lock_path.is_file() else "package-lock.json is missing"),
             DoctorCheck("Vite config", (root / "vite.config.ts").is_file(), "vite.config.ts present" if (root / "vite.config.ts").is_file() else "vite.config.ts is missing"),
             DoctorCheck("frontend source", (root / "src").is_dir(), "src/ present" if (root / "src").is_dir() else "src/ is missing"),
+            DoctorCheck(
+                "CI workflow",
+                (root / REQUIRED_CI_WORKFLOW).is_file(),
+                (
+                    f"{REQUIRED_CI_WORKFLOW} present"
+                    if (root / REQUIRED_CI_WORKFLOW).is_file()
+                    else f"{REQUIRED_CI_WORKFLOW} is missing"
+                ),
+            ),
         ]
     )
     missing_docs = [path for path in REQUIRED_DOCS if not (root / path).is_file()]

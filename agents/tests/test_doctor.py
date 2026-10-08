@@ -13,6 +13,9 @@ def make_ready_root(root: Path) -> Path:
     (root / "package-lock.json").write_text("{}", encoding="utf-8")
     (root / "vite.config.ts").write_text("export default {}\n", encoding="utf-8")
     (root / "src").mkdir()
+    workflow = root / ".github/workflows/ci.yml"
+    workflow.parent.mkdir(parents=True)
+    workflow.write_text("name: CI\n", encoding="utf-8")
     for relative in (
         "README.md",
         "AGENTS.md",
@@ -64,6 +67,17 @@ def test_structural_failure_is_actionable(tmp_path: Path) -> None:
 
     assert failed[0].name == "npm scripts"
     assert failed[0].detail == "missing: lint"
+
+
+def test_static_doctor_is_not_ready_without_ci_workflow(tmp_path: Path) -> None:
+    root = make_ready_root(tmp_path)
+    (root / ".github/workflows/ci.yml").unlink()
+
+    failed = [check for check in run_doctor(root, static=True) if not check.passed]
+
+    assert len(failed) == 1
+    assert failed[0].name == "CI workflow"
+    assert failed[0].detail == ".github/workflows/ci.yml is missing"
 
 
 def test_command_checks_use_safe_subprocess_arguments(tmp_path: Path) -> None:

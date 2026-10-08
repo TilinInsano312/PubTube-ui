@@ -40,8 +40,9 @@ python -m agents doctor --static
 python -m agents doctor
 ```
 
-El modo estático sirve para CI cuando las suites se ejecutan en pasos separados.
-Docker, Grafana y el backend no son requisitos de readiness del frontend.
+El modo estático sirve para CI cuando las suites se ejecutan en pasos separados
+y exige que `.github/workflows/ci.yml` exista. No parsea el workflow ni ejecuta
+servicios. Docker, Grafana y el backend no son requisitos de readiness del frontend.
 Leer [AGENTS.md](../AGENTS.md), [arquitectura frontend](../docs/architecture.md) y
 [guía](../docs/agentic-development.md) antes de editar.
 

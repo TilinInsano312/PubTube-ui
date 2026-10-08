@@ -119,6 +119,11 @@ Para verificar scope, pasar mediante `--baseline` el commit capturado al inicio
 de esa tarea. Si se omite, el runner solo prepara el brief y no inventa un
 baseline por defecto.
 
+`doctor --static` comprueba la estructura mínima, incluida la existencia de
+`.github/workflows/ci.yml`, sin parsear YAML ni requerir Docker, Grafana o el
+backend. El doctor normal añade lint, `format:check`, tests, build, `compileall`,
+pytest y validación de contratos.
+
 US-D7-T4 se contrata por separado; el ejemplo documentado solo comprueba la
 generación de un brief.
 
